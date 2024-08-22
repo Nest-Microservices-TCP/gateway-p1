@@ -1,6 +1,6 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { catchError, firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
 
 @Controller('rooms')
@@ -13,7 +13,13 @@ export class RoomsController {
   @Get()
   async getHello() {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'get.hello' }, {}),
+      this.roomsClient
+        .send({ cmd: 'get.hello' }, { name: 'sucia', description: 'test' })
+        .pipe(
+          catchError((error) => {
+            throw new RpcException(error);
+          }),
+        ),
     );
   }
 }
