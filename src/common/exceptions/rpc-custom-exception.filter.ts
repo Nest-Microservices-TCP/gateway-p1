@@ -22,6 +22,8 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response: Response = ctx.getResponse();
 
+    this.logger.error({ exception });
+
     const rpcError = exception.getError();
 
     this.logger.error(`RPC Error: ${rpcError.toString()}`, exception.stack);
