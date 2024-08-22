@@ -14,7 +14,7 @@ export class RoomStatesController {
   @Post()
   async save(@Body() request: CreateRoomStateDto) {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'save_room_state' }, { request }).pipe(
+      this.roomsClient.send({ cmd: 'save.room.state' }, request).pipe(
         catchError((error) => {
           throw new RpcException(error);
         }),
