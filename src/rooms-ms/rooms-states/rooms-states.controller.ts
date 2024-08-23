@@ -34,4 +34,15 @@ export class RoomStatesController {
         ),
     );
   }
+
+  @Get()
+  async findAll() {
+    return firstValueFrom(
+      this.roomsClient.send({ cmd: 'find.all.rooms.states' }, {}).pipe(
+        catchError((error) => {
+          throw new RpcException(error);
+        }),
+      ),
+    );
+  }
 }
