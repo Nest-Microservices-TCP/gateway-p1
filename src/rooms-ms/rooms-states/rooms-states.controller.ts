@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
@@ -19,6 +19,19 @@ export class RoomStatesController {
           throw new RpcException(error);
         }),
       ),
+    );
+  }
+
+  @Get(':id')
+  async findOneById(@Param('id') id: string) {
+    return firstValueFrom(
+      this.roomsClient
+        .send({ cmd: 'find.one.room.state' }, { roomStateId: id })
+        .pipe(
+          catchError((error) => {
+            throw new RpcException(error);
+          }),
+        ),
     );
   }
 }
