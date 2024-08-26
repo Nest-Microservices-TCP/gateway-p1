@@ -6,6 +6,9 @@ interface EnvVars {
 
   ROOMS_PORT: number;
   ROOMS_HOST: string;
+
+  COLLABORATORS_PORT: number;
+  COLLABORATORS_HOST: string;
 }
 
 const envSchema = joi
@@ -14,6 +17,9 @@ const envSchema = joi
 
     ROOMS_PORT: joi.number().required(),
     ROOMS_HOST: joi.string().required(),
+
+    COLLABORATORS_PORT: joi.number().required(),
+    COLLABORATORS_HOST: joi.string().required(),
   })
   .unknown(true);
 
@@ -30,4 +36,7 @@ export const envs = {
 
   roomsPort: envVars.ROOMS_PORT,
   roomsHost: envVars.ROOMS_HOST,
+
+  collaboratorsPort: envVars.COLLABORATORS_PORT,
+  collaboratorsHost: envVars.COLLABORATORS_HOST,
 };
