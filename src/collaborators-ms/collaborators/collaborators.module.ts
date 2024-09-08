@@ -3,7 +3,7 @@ import { CollaboratorsController } from './collaborators.controller';
 import { CollaboratorsClient } from 'src/providers';
 
 @Module({
+  imports: [CollaboratorsClient],
   controllers: [CollaboratorsController],
-  providers: [CollaboratorsClient],
 })
 export class CollaboratorsModule {}
