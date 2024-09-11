@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CollaboratorsModule } from './collaborators/collaborators.module';
+import { AreasModule } from './areas/areas.module';
 
 @Module({
-  imports: [CollaboratorsModule],
-  controllers: [],
-  providers: [],
+  imports: [CollaboratorsModule, AreasModule],
 })
 export class CollaboratorsMSModule {}
