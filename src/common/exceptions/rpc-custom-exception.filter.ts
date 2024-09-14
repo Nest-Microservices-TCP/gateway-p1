@@ -26,7 +26,7 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
 
     const rpcError = exception.getError();
 
-    this.logger.error(`RPC Error: ${rpcError.toString()}`, exception.stack);
+    // this.logger.error(`RPC Error: ${rpcError.toString()}`, exception.stack);
 
     /**
      * Maneja el caso cuando el erro viene con mensaje vació
