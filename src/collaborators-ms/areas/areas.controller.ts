@@ -25,14 +25,14 @@ export class AreasController {
   ) {}
 
   @Post()
-  save(@Body() request: CreateAreaDto) {
+  save(@Body() request: CreateAreaDto): Promise<AreaResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'save.area' }, request),
     );
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<AreaResponseDto[]> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'find.all.areas' }, {}),
     );
@@ -40,22 +40,20 @@ export class AreasController {
 
   @Get(':id')
   async findOneById(@Param('id') id: string): Promise<AreaResponseDto> {
-    console.log({ id });
-    // console.log('Hola');
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'find.one.area.by.id' }, { id }),
     );
   }
 
   @Patch()
-  update(@Body() request: UpdateAreaDto) {
+  update(@Body() request: UpdateAreaDto): Promise<AreaResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'update.area' }, request),
     );
   }
 
   @Delete(':id')
-  deleteById(@Param('id') id: string) {
+  deleteById(@Param('id') id: string): Promise<AreaResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'delete.area.by.id' }, { id }),
     );
