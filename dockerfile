@@ -9,3 +9,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 300
+
+CMD ["npm", "run", "start:dev"]
