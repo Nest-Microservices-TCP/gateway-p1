@@ -11,9 +11,10 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { COLLABORATORS_MS } from 'src/config';
-import { CreateAreaDto, UpdateAreaDto } from './dto';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
+import { AreaResponseDto } from './dto/response';
 
 @UseInterceptors(ErrorInterceptor)
 @Controller('areas')
@@ -38,7 +39,9 @@ export class AreasController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string) {
+  async findOneById(@Param('id') id: string): Promise<AreaResponseDto> {
+    console.log({ id });
+    // console.log('Hola');
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'find.one.area.by.id' }, { id }),
     );
@@ -53,7 +56,6 @@ export class AreasController {
 
   @Delete(':id')
   deleteById(@Param('id') id: string) {
-    console.log(id);
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'delete.area.by.id' }, { id }),
     );
