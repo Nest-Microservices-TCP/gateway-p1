@@ -2,6 +2,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { COLLABORATORS_MS } from 'src/config';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
+import { CollaboratorResponseDto } from './dto/response';
 import {
   Body,
   Controller,
@@ -28,7 +29,9 @@ export class CollaboratorsController {
   ) {}
 
   @Post()
-  async save(@Body() request: CreateCollaboratorDto) {
+  async save(
+    @Body() request: CreateCollaboratorDto,
+  ): Promise<CollaboratorResponseDto> {
     return await firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'save.collaborator' }, request),
     );
