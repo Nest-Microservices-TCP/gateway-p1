@@ -1,3 +1,7 @@
+import { ClientProxy } from '@nestjs/microservices';
+import { COLLABORATORS_MS } from 'src/config';
+import { firstValueFrom } from 'rxjs';
+import { ErrorInterceptor } from 'src/common/interceptors';
 import {
   Body,
   Controller,
@@ -9,12 +13,11 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { COLLABORATORS_MS } from 'src/config';
-import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
-import { firstValueFrom } from 'rxjs';
-import { FindOneCollaboratorById, UpdateCollaboratorDto } from './dto';
-import { ErrorInterceptor } from 'src/common/interceptors';
+import {
+  CreateCollaboratorDto,
+  FindOneCollaboratorById,
+  UpdateCollaboratorDto,
+} from './dto/request';
 
 @Controller('collaborators')
 @UseInterceptors(ErrorInterceptor)
