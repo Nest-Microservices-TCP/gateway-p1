@@ -11,7 +11,7 @@ import {
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
-import { CreateRoomDto, UpdateRoomDto } from './dto';
+import { CreateRoomDto, UpdateRoomDto } from './dto/request';
 
 @Controller('rooms')
 export class RoomsController {
