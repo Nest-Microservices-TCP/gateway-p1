@@ -38,14 +38,16 @@ export class CollaboratorsController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<CollaboratorResponseDto[]> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'find.all.collaborators' }, {}),
     );
   }
 
   @Post('find-one')
-  async findOneById(@Body() request: FindOneCollaboratorById) {
+  async findOneById(
+    @Body() request: FindOneCollaboratorById,
+  ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
         { cmd: 'find.one.collaborator.by.id' },
@@ -55,14 +57,16 @@ export class CollaboratorsController {
   }
 
   @Patch()
-  async update(@Body() request: UpdateCollaboratorDto) {
+  async update(
+    @Body() request: UpdateCollaboratorDto,
+  ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'update.collaborator' }, request),
     );
   }
 
   @Delete(':id')
-  async deleteById(@Param('id') id: string) {
+  async deleteById(@Param('id') id: string): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
         { cmd: 'delete.collaborator.by.id' },
