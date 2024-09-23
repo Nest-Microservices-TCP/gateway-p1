@@ -13,7 +13,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 import { COLLABORATORS_MS } from 'src/config';
-import { CreatePositionDto, UpdatePositionDto } from './dto';
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
 
 @Controller('positions')
 @UseInterceptors(ErrorInterceptor)
