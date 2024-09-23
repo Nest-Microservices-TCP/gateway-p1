@@ -14,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 import { COLLABORATORS_MS } from 'src/config';
 import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { PositionResponseDto } from './dto/response';
 
 @Controller('positions')
 @UseInterceptors(ErrorInterceptor)
@@ -23,14 +24,14 @@ export class PositionsController {
   ) {}
 
   @Get()
-  findAll() {
+  findAll(): Promise<PositionResponseDto[]> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'find.all.positions' }, {}),
     );
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string) {
+  findOneById(@Param('id') id: string): Promise<PositionResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
         { cmd: 'find.one.positions.by.id' },
@@ -40,21 +41,21 @@ export class PositionsController {
   }
 
   @Post()
-  save(@Body() request: CreatePositionDto) {
+  save(@Body() request: CreatePositionDto): Promise<PositionResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'save.position' }, request),
     );
   }
 
   @Patch()
-  update(@Body() request: UpdatePositionDto) {
+  update(@Body() request: UpdatePositionDto): Promise<PositionResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'update.position' }, request),
     );
   }
 
   @Delete(':id')
-  deleteById(@Param('id') id: string) {
+  deleteById(@Param('id') id: string): Promise<PositionResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'delete.position.by.id' }, { id }),
     );
