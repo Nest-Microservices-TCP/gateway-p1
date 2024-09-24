@@ -1,3 +1,7 @@
+import { ROOMS_MS } from 'src/config';
+import { catchError, firstValueFrom } from 'rxjs';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { CreateRoomStateDto, UpdateRoomStateDto } from './dto/request';
 import {
   Body,
   Controller,
@@ -8,11 +12,6 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { catchError, firstValueFrom } from 'rxjs';
-import { ROOMS_MS } from 'src/config';
-import { CreateRoomStateDto } from './dto/create-room-state.dto';
-import { UpdateRoomStateDto } from './dto';
 
 @Controller('rooms-states')
 export class RoomStatesController {
