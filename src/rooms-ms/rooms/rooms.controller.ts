@@ -12,6 +12,7 @@ import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
 import { CreateRoomDto, UpdateRoomDto } from './dto/request';
+import { RoomResponseDto } from './dto/response';
 
 @Controller('rooms')
 export class RoomsController {
@@ -21,7 +22,7 @@ export class RoomsController {
   ) {}
 
   @Post()
-  async save(@Body() request: CreateRoomDto) {
+  async save(@Body() request: CreateRoomDto): Promise<RoomResponseDto> {
     return firstValueFrom(
       this.roomsClient.send({ cmd: 'save.room' }, request).pipe(
         catchError((error) => {
@@ -32,7 +33,7 @@ export class RoomsController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<RoomResponseDto[]> {
     return firstValueFrom(
       this.roomsClient.send({ cmd: 'find.all.rooms' }, {}).pipe(
         catchError((error) => {
@@ -43,7 +44,7 @@ export class RoomsController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') id: string) {
+  async findOneById(@Param('id') id: string): Promise<RoomResponseDto> {
     return firstValueFrom(
       this.roomsClient.send({ cmd: 'find.one.room.by.id' }, { id }).pipe(
         catchError((error) => {
@@ -54,7 +55,7 @@ export class RoomsController {
   }
 
   @Patch()
-  async update(@Body() request: UpdateRoomDto) {
+  async update(@Body() request: UpdateRoomDto): Promise<RoomResponseDto> {
     return firstValueFrom(
       this.roomsClient.send({ cmd: 'update.room' }, request).pipe(
         catchError((error) => {
@@ -65,7 +66,7 @@ export class RoomsController {
   }
 
   @Delete(':id')
-  async deleteById(@Param('id') id: string) {
+  async deleteById(@Param('id') id: string): Promise<RoomResponseDto> {
     return firstValueFrom(
       this.roomsClient.send({ cmd: 'delete.room.by.id' }, { id }).pipe(
         catchError((error) => {
