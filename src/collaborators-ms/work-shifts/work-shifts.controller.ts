@@ -1,9 +1,17 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { COLLABORATORS_MS } from 'src/config';
 import { WorkShiftResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
-import { CreateWorkShiftDto } from './dto/request';
+import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
 
 @Controller('work-shifts')
 export class WorkShiftsController {
@@ -33,6 +41,13 @@ export class WorkShiftsController {
   save(@Body() request: CreateWorkShiftDto): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'save.work.shift' }, request),
+    );
+  }
+
+  @Patch()
+  update(@Body() request: UpdateWorkShiftDto): Promise<WorkShiftResponseDto> {
+    return firstValueFrom(
+      this.collaboratorsClient.send({ cmd: 'update.work.shift' }, request),
     );
   }
 }
