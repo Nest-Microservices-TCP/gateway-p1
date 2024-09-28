@@ -7,13 +7,16 @@ import {
   Param,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { COLLABORATORS_MS } from 'src/config';
 import { WorkShiftResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
 import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { ErrorInterceptor } from 'src/common/interceptors';
 
+@UseInterceptors(ErrorInterceptor)
 @Controller('work-shifts')
 export class WorkShiftsController {
   constructor(
