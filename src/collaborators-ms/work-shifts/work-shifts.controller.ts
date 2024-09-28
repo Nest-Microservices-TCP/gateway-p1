@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -48,6 +49,13 @@ export class WorkShiftsController {
   update(@Body() request: UpdateWorkShiftDto): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'update.work.shift' }, request),
+    );
+  }
+
+  @Delete()
+  deleteById(@Param('id') id: string): Promise<WorkShiftResponseDto> {
+    return firstValueFrom(
+      this.collaboratorsClient.send({ cmd: 'delete.work.shift.by.id' }, { id }),
     );
   }
 }
