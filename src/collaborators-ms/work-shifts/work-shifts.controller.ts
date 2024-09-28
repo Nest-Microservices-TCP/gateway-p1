@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { COLLABORATORS_MS } from 'src/config';
 import { WorkShiftResponseDto } from './dto/response';
@@ -15,6 +15,16 @@ export class WorkShiftsController {
   findAll(): Promise<WorkShiftResponseDto[]> {
     return firstValueFrom(
       this.collaboratorsClient.send({ cmd: 'find.all.work.shifts' }, {}),
+    );
+  }
+
+  @Get(':id')
+  findOneById(@Param('id') id: string): Promise<WorkShiftResponseDto> {
+    return firstValueFrom(
+      this.collaboratorsClient.send(
+        { cmd: 'find.one.work.shift.by.id' },
+        { id },
+      ),
     );
   }
 }
