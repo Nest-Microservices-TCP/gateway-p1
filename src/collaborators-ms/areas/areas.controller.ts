@@ -39,9 +39,9 @@ export class AreasController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') id: string): Promise<AreaResponseDto> {
+  async findOneById(@Param('id') areaId: string): Promise<AreaResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'find.one.area.by.id' }, { id }),
+      this.collaboratorsClient.send({ cmd: 'find.one.area.by.id' }, { areaId }),
     );
   }
 
@@ -53,9 +53,9 @@ export class AreasController {
   }
 
   @Delete(':id')
-  deleteById(@Param('id') id: string): Promise<AreaResponseDto> {
+  deleteById(@Param('id') areaId: string): Promise<AreaResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'delete.area.by.id' }, { id }),
+      this.collaboratorsClient.send({ cmd: 'delete.area.by.id' }, { areaId }),
     );
   }
 }
