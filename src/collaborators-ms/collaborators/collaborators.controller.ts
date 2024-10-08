@@ -66,11 +66,13 @@ export class CollaboratorsController {
   }
 
   @Delete(':id')
-  async deleteById(@Param('id') id: string): Promise<CollaboratorResponseDto> {
+  async deleteById(
+    @Param('id') collaboratorId: string,
+  ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
         { cmd: 'delete.collaborator.by.id' },
-        { id },
+        { collaboratorId },
       ),
     );
   }
