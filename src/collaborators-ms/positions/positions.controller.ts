@@ -31,11 +31,11 @@ export class PositionsController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string): Promise<PositionResponseDto> {
+  findOneById(@Param('id') positionId: string): Promise<PositionResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
         { cmd: 'find.one.positions.by.id' },
-        { id },
+        { positionId },
       ),
     );
   }
@@ -55,9 +55,12 @@ export class PositionsController {
   }
 
   @Delete(':id')
-  deleteById(@Param('id') id: string): Promise<PositionResponseDto> {
+  deleteById(@Param('id') positionId: string): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'delete.position.by.id' }, { id }),
+      this.collaboratorsClient.send(
+        { cmd: 'delete.position.by.id' },
+        { positionId },
+      ),
     );
   }
 }
