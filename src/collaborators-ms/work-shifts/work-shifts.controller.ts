@@ -32,11 +32,11 @@ export class WorkShiftsController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: string): Promise<WorkShiftResponseDto> {
+  findOneById(@Param('id') workShiftId: string): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
         { cmd: 'find.one.work.shift.by.id' },
-        { id },
+        { workShiftId },
       ),
     );
   }
@@ -56,9 +56,12 @@ export class WorkShiftsController {
   }
 
   @Delete()
-  deleteById(@Param('id') id: string): Promise<WorkShiftResponseDto> {
+  deleteById(@Param('id') workShiftId: string): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'delete.work.shift.by.id' }, { id }),
+      this.collaboratorsClient.send(
+        { cmd: 'delete.work.shift.by.id' },
+        { workShiftId },
+      ),
     );
   }
 }
