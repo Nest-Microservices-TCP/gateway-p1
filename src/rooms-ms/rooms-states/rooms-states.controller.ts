@@ -34,9 +34,11 @@ export class RoomStatesController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') id: string): Promise<RoomStateResponseDto> {
+  async findOneById(
+    @Param('id') roomStateId: string,
+  ): Promise<RoomStateResponseDto> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.one.roomState' }, { roomStateId: id }),
+      this.roomsClient.send({ cmd: 'find.one.roomState' }, { roomStateId }),
     );
   }
 
@@ -57,9 +59,11 @@ export class RoomStatesController {
   }
 
   @Delete(':id')
-  async deleteById(id: string): Promise<RoomStateResponseDto> {
+  async deleteById(
+    @Param('id') roomStateId: string,
+  ): Promise<RoomStateResponseDto> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'delete.roomState.by.id' }, { id }),
+      this.roomsClient.send({ cmd: 'delete.roomState.by.id' }, { roomStateId }),
     );
   }
 }
