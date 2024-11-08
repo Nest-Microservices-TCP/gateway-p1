@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { CreateRoomDto } from '../rooms/dto/request';
 import { ClientProxy } from '@nestjs/microservices';
 import { RentResponseDto } from './dto/response';
@@ -20,5 +20,12 @@ export class RentsController {
   @Get()
   async findAl(): Promise<RentResponseDto[]> {
     return firstValueFrom(this.roomsClient.send({ cmd: 'find.all.rents' }, {}));
+  }
+
+  @Get(':id')
+  async findOneById(@Param('id') rentId: string): Promise<RentResponseDto> {
+    return firstValueFrom(
+      this.roomsClient.send({ cmd: 'find.one.rent.by.id' }, { rentId }),
+    );
   }
 }
