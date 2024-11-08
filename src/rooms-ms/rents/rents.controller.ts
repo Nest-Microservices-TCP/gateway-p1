@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
-import { RoomResponseDto } from '../rooms/dto/response';
 import { CreateRoomDto } from '../rooms/dto/request';
 import { ClientProxy } from '@nestjs/microservices';
+import { RentResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
-import { RentResponseDto } from './dto/response';
 
 @Controller('rents')
 export class RentsController {
@@ -14,7 +13,7 @@ export class RentsController {
   ) {}
 
   @Post()
-  async save(@Body() request: CreateRoomDto): Promise<RoomResponseDto> {
+  async save(@Body() request: CreateRoomDto): Promise<RentResponseDto> {
     return firstValueFrom(this.roomsClient.send({ cmd: 'save.rent' }, request));
   }
 
