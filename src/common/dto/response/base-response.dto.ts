@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { Status } from '../enums';
+import { Status } from '../../enums';
 
 export abstract class BaseResponseDto {
   @Expose()
