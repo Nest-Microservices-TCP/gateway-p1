@@ -1,4 +1,4 @@
-import { BaseResponseDto } from 'src/common/dto';
+import { BaseResponseDto } from 'src/common/dto/response';
 import { Expose } from 'class-transformer';
 
 export class AreaResponseDto extends BaseResponseDto {
