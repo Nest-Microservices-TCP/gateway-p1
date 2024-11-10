@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from 'src/common/dto/response/base.response.dto';
 
 export class CollaboratorResponseDto extends BaseResponseDto {
   @Expose()
