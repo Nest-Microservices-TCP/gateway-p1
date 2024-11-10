@@ -1,20 +1,21 @@
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateRoomDto, UpdateRoomDto } from './dto/request';
+import { ErrorInterceptor } from 'src/common/interceptors';
+import { ClientProxy } from '@nestjs/microservices';
+import { RoomResponseDto } from './dto/response';
+import { ROOMS_MS } from 'src/config';
+import { firstValueFrom } from 'rxjs';
 import {
-  Body,
-  Controller,
-  Delete,
   Get,
-  Inject,
+  Body,
+  Post,
   Param,
   Patch,
-  Post,
+  Inject,
+  Delete,
+  Controller,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { ROOMS_MS } from 'src/config';
-import { CreateRoomDto, UpdateRoomDto } from './dto/request';
-import { RoomResponseDto } from './dto/response';
-import { ErrorInterceptor } from 'src/common/interceptors';
 
 @Controller('rooms')
 @UseInterceptors(ErrorInterceptor)
@@ -49,9 +50,9 @@ export class RoomsController {
   }
 
   @Delete(':id')
-  async deleteById(@Param('id') roomId: string): Promise<RoomResponseDto> {
+  async remove(@Param('id') roomId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'delete.room.by.id' }, { roomId }),
+      this.roomsClient.send({ cmd: 'remove.room.by.id' }, { roomId }),
     );
   }
 }
