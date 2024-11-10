@@ -1,18 +1,20 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreateRoomDto } from '../rooms/dto/request';
 import { ClientProxy } from '@nestjs/microservices';
 import { RentResponseDto } from './dto/response';
+import { UpdateRentDto } from './dto/request';
 import { firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
-import { UpdateRentDto } from './dto/request';
+import {
+  Get,
+  Body,
+  Post,
+  Param,
+  Patch,
+  Inject,
+  Delete,
+  Controller,
+} from '@nestjs/common';
 
 @Controller('rents')
 export class RentsController {
@@ -27,7 +29,7 @@ export class RentsController {
   }
 
   @Get()
-  async findAl(): Promise<RentResponseDto[]> {
+  async findAll(): Promise<RentResponseDto[]> {
     return firstValueFrom(this.roomsClient.send({ cmd: 'find.all.rents' }, {}));
   }
 
@@ -42,6 +44,13 @@ export class RentsController {
   async update(@Body() request: UpdateRentDto): Promise<RentResponseDto> {
     return firstValueFrom(
       this.roomsClient.send({ cmd: 'update.rent' }, request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(@Param('rentId') rentId: string): Promise<DeleteResultResponse> {
+    return firstValueFrom(
+      this.roomsClient.send({ cmd: 'remove.rent.by.id' }, { rentId }),
     );
   }
 }
