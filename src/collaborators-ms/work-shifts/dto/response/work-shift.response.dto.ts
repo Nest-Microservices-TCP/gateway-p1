@@ -1,5 +1,5 @@
+import { BaseResponseDto } from 'src/common/dto/response/base.response.dto';
 import { Expose } from 'class-transformer';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 
 export class WorkShiftResponseDto extends BaseResponseDto {
   @Expose()
