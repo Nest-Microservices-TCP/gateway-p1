@@ -1,20 +1,21 @@
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { ErrorInterceptor } from 'src/common/interceptors';
+import { PositionResponseDto } from './dto/response';
+import { ClientProxy } from '@nestjs/microservices';
+import { COLLABORATORS_MS } from 'src/config';
+import { firstValueFrom } from 'rxjs';
 import {
-  Body,
-  Controller,
-  Delete,
   Get,
-  Inject,
+  Post,
+  Body,
   Param,
   Patch,
-  Post,
+  Delete,
+  Inject,
+  Controller,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { COLLABORATORS_MS } from 'src/config';
-import { CreatePositionDto, UpdatePositionDto } from './dto/request';
-import { PositionResponseDto } from './dto/response';
 
 @Controller('positions')
 @UseInterceptors(ErrorInterceptor)
@@ -55,10 +56,10 @@ export class PositionsController {
   }
 
   @Delete(':id')
-  deleteById(@Param('id') positionId: string): Promise<PositionResponseDto> {
+  remove(@Param('id') positionId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
       this.collaboratorsClient.send(
-        { cmd: 'delete.position.by.id' },
+        { cmd: 'remove.position.by.id' },
         { positionId },
       ),
     );
