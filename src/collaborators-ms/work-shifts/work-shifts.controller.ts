@@ -1,20 +1,21 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Inject,
-  Param,
-  Patch,
-  Post,
-  UseInterceptors,
-} from '@nestjs/common';
+import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { ErrorInterceptor } from 'src/common/interceptors';
+import { WorkShiftResponseDto } from './dto/response';
 import { ClientProxy } from '@nestjs/microservices';
 import { COLLABORATORS_MS } from 'src/config';
-import { WorkShiftResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
-import { CreateWorkShiftDto, UpdateWorkShiftDto } from './dto/request';
-import { ErrorInterceptor } from 'src/common/interceptors';
+import {
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  Inject,
+  Controller,
+  UseInterceptors,
+} from '@nestjs/common';
 
 @UseInterceptors(ErrorInterceptor)
 @Controller('work-shifts')
@@ -56,10 +57,10 @@ export class WorkShiftsController {
   }
 
   @Delete()
-  deleteById(@Param('id') workShiftId: string): Promise<WorkShiftResponseDto> {
+  remove(@Param('id') workShiftId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
       this.collaboratorsClient.send(
-        { cmd: 'delete.work.shift.by.id' },
+        { cmd: 'remove.work.shift.by.id' },
         { workShiftId },
       ),
     );
