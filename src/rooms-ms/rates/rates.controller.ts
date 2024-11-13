@@ -1,9 +1,17 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { CreateRateDto, UpdateRateDto } from './dto/request';
 import { ClientProxy } from '@nestjs/microservices';
 import { RateResponseDto } from './dto/response';
-import { CreateRateDto } from './dto/request';
 import { firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
+import {
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Inject,
+  Controller,
+} from '@nestjs/common';
 
 @Controller('rates')
 export class RatesController {
@@ -30,6 +38,13 @@ export class RatesController {
   async save(@Body() request: CreateRateDto): Promise<RateResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'save.rate' }, request),
+    );
+  }
+
+  @Patch()
+  async update(@Body() request: UpdateRateDto): Promise<RateResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'update.rate' }, request),
     );
   }
 }
