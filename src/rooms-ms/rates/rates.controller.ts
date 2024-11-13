@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { RateResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
@@ -15,6 +15,12 @@ export class RatesController {
   async findAll(): Promise<RateResponseDto[]> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'find.all.rates' }, {}),
+    );
+  }
+
+  async findOneById(@Param('id') rateId: string): Promise<RateResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'find.one.rate.by.id' }, { rateId }),
     );
   }
 }
