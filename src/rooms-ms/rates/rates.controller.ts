@@ -10,8 +10,10 @@ import {
   Patch,
   Param,
   Inject,
+  Delete,
   Controller,
 } from '@nestjs/common';
+import { DeleteResultResponse } from 'src/common/dto/response';
 
 @Controller('rates')
 export class RatesController {
@@ -45,6 +47,13 @@ export class RatesController {
   async update(@Body() request: UpdateRateDto): Promise<RateResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'update.rate' }, request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') rateId: string): Promise<DeleteResultResponse> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'remove.rate.by.id' }, { rateId }),
     );
   }
 }
