@@ -1,4 +1,6 @@
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreateRateDto, UpdateRateDto } from './dto/request';
+import { ErrorInterceptor } from 'src/common/interceptors';
 import { ClientProxy } from '@nestjs/microservices';
 import { RateResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
@@ -12,9 +14,10 @@ import {
   Inject,
   Delete,
   Controller,
+  UseInterceptors,
 } from '@nestjs/common';
-import { DeleteResultResponse } from 'src/common/dto/response';
 
+@UseInterceptors(ErrorInterceptor)
 @Controller('rates')
 export class RatesController {
   constructor(
