@@ -1,5 +1,6 @@
 import { CreateExtraDto, UpdateExtraDto } from './dto/request';
 import { DeleteResultResponse } from 'src/common/dto/response';
+import { ErrorInterceptor } from 'src/common/interceptors';
 import { ClientProxy } from '@nestjs/microservices';
 import { ExtraResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
@@ -13,9 +14,11 @@ import {
   Delete,
   Inject,
   Controller,
+  UseInterceptors,
 } from '@nestjs/common';
 
 @Controller('extras')
+@UseInterceptors(ErrorInterceptor)
 export class ExtrasController {
   constructor(
     @Inject(ROOMS_MS)
