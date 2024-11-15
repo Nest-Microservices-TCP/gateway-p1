@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ROOMS_MS } from 'src/config';
 import { ExtraResponseDto } from './dto/response';
@@ -15,6 +15,13 @@ export class ExtrasController {
   async findAll(): Promise<ExtraResponseDto[]> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'find.all.extras' }, {}),
+    );
+  }
+
+  @Get(':id')
+  async findOneById(@Param('id') extraId: string): Promise<ExtraResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'find.one.extra.by.id' }, { extraId }),
     );
   }
 }
