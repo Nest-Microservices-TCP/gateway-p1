@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -12,6 +13,7 @@ import { ROOMS_MS } from 'src/config';
 import { ExtraResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
 import { CreateExtraDto, UpdateExtraDto } from './dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
 
 @Controller('extras')
 export class ExtrasController {
@@ -45,6 +47,13 @@ export class ExtrasController {
   async update(@Body() request: UpdateExtraDto): Promise<ExtraResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'update.extra' }, request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') extraId: string): Promise<DeleteResultResponse> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'remove.extra.by.id' }, { extraId }),
     );
   }
 }
