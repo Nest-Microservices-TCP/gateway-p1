@@ -1,9 +1,17 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ROOMS_MS } from 'src/config';
 import { ReservationResponseDto } from './dto/response';
 import { firstValueFrom } from 'rxjs';
-import { CreateReservationDto } from './dto/request';
+import { CreateReservationDto, UpdateReservationDto } from './dto/request';
 
 @Controller('reservations')
 export class ReservationsController {
@@ -19,15 +27,6 @@ export class ReservationsController {
     );
   }
 
-  @Post()
-  async save(
-    @Body() request: CreateReservationDto,
-  ): Promise<ReservationResponseDto> {
-    return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'save.reservation' }, request),
-    );
-  }
-
   @Get(':id')
   async findOneById(
     @Param('id') reservationId: string,
@@ -37,6 +36,24 @@ export class ReservationsController {
         { cmd: 'find.one.reservation.by.id' },
         { reservationId },
       ),
+    );
+  }
+
+  @Post()
+  async save(
+    @Body() request: CreateReservationDto,
+  ): Promise<ReservationResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'save.reservation' }, request),
+    );
+  }
+
+  @Patch()
+  async update(
+    @Body() request: UpdateReservationDto,
+  ): Promise<ReservationResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'update.reservation' }, request),
     );
   }
 }
