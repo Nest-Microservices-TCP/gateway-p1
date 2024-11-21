@@ -1,4 +1,4 @@
-import { ReservationOrigin, ReservationState } from 'src/reservations/enum';
+import { ReservationOrigin, ReservationState } from '../../enum';
 import { Expose } from 'class-transformer';
 
 export class ReservationResponseDto {
