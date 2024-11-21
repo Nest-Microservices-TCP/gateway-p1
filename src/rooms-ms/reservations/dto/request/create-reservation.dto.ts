@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsNumber, IsPositive, Min } from 'class-validator';
-import { ReservationOrigin } from 'src/reservations/enum';
+import { ReservationOrigin } from '../../enum';
 
 export class CreateReservationDto {
   @IsDate()
