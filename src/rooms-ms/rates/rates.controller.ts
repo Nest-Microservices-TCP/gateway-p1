@@ -17,8 +17,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-@UseInterceptors(ErrorInterceptor)
 @Controller('rates')
+@UseInterceptors(ErrorInterceptor)
 export class RatesController {
   constructor(
     @Inject(ROOMS_MS)
