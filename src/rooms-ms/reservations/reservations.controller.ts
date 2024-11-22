@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -54,6 +55,15 @@ export class ReservationsController {
   ): Promise<ReservationResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'update.reservation' }, request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(
+    @Param('id') reservationId: string,
+  ): Promise<ReservationResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'remove.reservation' }, { reservationId }),
     );
   }
 }
