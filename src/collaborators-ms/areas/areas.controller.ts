@@ -40,9 +40,9 @@ export class AreasController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') areaId: string): Promise<AreaResponseDto> {
+  findOne(@Param('id') areaId: string): Promise<AreaResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'find.one.area.by.id' }, { areaId }),
+      this.collaboratorsClient.send({ cmd: 'find.one.area' }, { areaId }),
     );
   }
 
