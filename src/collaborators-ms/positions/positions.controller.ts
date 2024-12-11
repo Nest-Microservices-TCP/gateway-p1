@@ -32,10 +32,10 @@ export class PositionsController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') positionId: string): Promise<PositionResponseDto> {
+  findOne(@Param('id') positionId: string): Promise<PositionResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
-        { cmd: 'find.one.positions.by.id' },
+        { cmd: 'find.one.position' },
         { positionId },
       ),
     );
