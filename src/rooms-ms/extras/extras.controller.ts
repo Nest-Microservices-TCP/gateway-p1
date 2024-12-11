@@ -33,9 +33,9 @@ export class ExtrasController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') extraId: string): Promise<ExtraResponseDto> {
+  async findOne(@Param('id') extraId: string): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.one.extra.by.id' }, { extraId }),
+      this.roomsClient.send({ cmd: 'find.one.extra' }, { extraId }),
     );
   }
 
