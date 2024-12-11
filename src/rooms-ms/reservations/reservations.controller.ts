@@ -32,14 +32,11 @@ export class ReservationsController {
   }
 
   @Get(':id')
-  async findOneById(
+  async findOne(
     @Param('id') reservationId: string,
   ): Promise<ReservationResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send(
-        { cmd: 'find.one.reservation.by.id' },
-        { reservationId },
-      ),
+      this.roomsClient.send({ cmd: 'find.one.reservation' }, { reservationId }),
     );
   }
 
