@@ -1,5 +1,5 @@
-import { CollaboratorsClient } from 'src/providers';
 import { WorkShiftsController } from './work-shifts.controller';
+import { CollaboratorsClient } from 'src/providers';
 import { Module } from '@nestjs/common';
 
 @Module({

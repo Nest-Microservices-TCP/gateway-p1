@@ -33,10 +33,10 @@ export class WorkShiftsController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') workShiftId: string): Promise<WorkShiftResponseDto> {
+  findOne(@Param('id') workShiftId: string): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
       this.collaboratorsClient.send(
-        { cmd: 'find.one.work.shift.by.id' },
+        { cmd: 'find.one.work.shift' },
         { workShiftId },
       ),
     );
