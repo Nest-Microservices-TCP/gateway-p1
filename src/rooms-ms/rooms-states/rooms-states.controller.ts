@@ -35,7 +35,7 @@ export class RoomStatesController {
   }
 
   @Get(':id')
-  async findOneById(
+  async findOne(
     @Param('id') roomStateId: string,
   ): Promise<RoomStateResponseDto> {
     return firstValueFrom(
