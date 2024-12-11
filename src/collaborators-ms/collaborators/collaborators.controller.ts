@@ -46,14 +46,11 @@ export class CollaboratorsController {
   }
 
   @Post('find-one')
-  async findOneById(
+  async findOne(
     @Body() request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send(
-        { cmd: 'find.one.collaborator.by.id' },
-        request,
-      ),
+      this.collaboratorsClient.send({ cmd: 'find.one.collaborator' }, request),
     );
   }
 
