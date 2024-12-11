@@ -33,9 +33,9 @@ export class RatesController {
   }
 
   @Get(':id')
-  async findOneById(@Param('id') rateId: string): Promise<RateResponseDto> {
+  async findOne(@Param('id') rateId: string): Promise<RateResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.one.rate.by.id' }, { rateId }),
+      this.roomsClient.send({ cmd: 'find.one.rate' }, { rateId }),
     );
   }
 
