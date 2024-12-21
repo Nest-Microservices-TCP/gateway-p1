@@ -17,8 +17,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-@UseInterceptors(ErrorInterceptor)
 @Controller('areas')
+@UseInterceptors(ErrorInterceptor)
 export class AreasController {
   constructor(
     @Inject(COLLABORATORS_MS)
@@ -56,7 +56,7 @@ export class AreasController {
   @Delete(':id')
   remove(@Param('id') areaId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'delete.area.by.id' }, { areaId }),
+      this.collaboratorsClient.send({ cmd: 'remove.area.by.id' }, { areaId }),
     );
   }
 }
