@@ -1,5 +1,6 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ReservationStateResponseDto } from './dto/response';
+import { CreateReservationStateDto } from './dto/request';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
@@ -27,6 +28,15 @@ export class ReservationsStatesController {
         { cmd: 'find.one.reservation.state' },
         { reservationStateId },
       ),
+    );
+  }
+
+  @Post()
+  async save(
+    @Body() request: CreateReservationStateDto,
+  ): Promise<ReservationStateResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'save.reservation.state' }, request),
     );
   }
 }
