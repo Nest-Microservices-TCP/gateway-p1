@@ -1,9 +1,20 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ReservationStateResponseDto } from './dto/response';
-import { CreateReservationStateDto } from './dto/request';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
+import {
+  CreateReservationStateDto,
+  UpdateReservationStateDto,
+} from './dto/request';
+import {
+  Get,
+  Body,
+  Post,
+  Param,
+  Patch,
+  Inject,
+  Controller,
+} from '@nestjs/common';
 
 @Controller('reservations-states')
 export class ReservationsStatesController {
@@ -37,6 +48,15 @@ export class ReservationsStatesController {
   ): Promise<ReservationStateResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'save.reservation.state' }, request),
+    );
+  }
+
+  @Patch()
+  async update(
+    @Body() request: UpdateReservationStateDto,
+  ): Promise<ReservationStateResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'update.reservation.state' }, request),
     );
   }
 }
