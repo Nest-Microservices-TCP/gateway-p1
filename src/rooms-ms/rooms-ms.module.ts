@@ -1,3 +1,4 @@
+import { ReservationsStatesModule } from './reservations-states/reservations-states.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { RoomsStatesModule } from './rooms-states/rooms-states.module';
 import { ExtrasModule } from './extras/extras.module';
@@ -14,6 +15,7 @@ import { Module } from '@nestjs/common';
     ExtrasModule,
     RoomsStatesModule,
     ReservationsModule,
+    ReservationsStatesModule,
   ],
   controllers: [],
   providers: [],
