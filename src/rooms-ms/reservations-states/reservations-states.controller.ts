@@ -1,5 +1,6 @@
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { ReservationStateResponseDto } from './dto/response';
+import { ErrorInterceptor } from 'src/common/interceptors';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ROOMS_MS } from 'src/config';
@@ -16,9 +17,11 @@ import {
   Inject,
   Delete,
   Controller,
+  UseInterceptors,
 } from '@nestjs/common';
 
 @Controller('reservations-states')
+@UseInterceptors(ErrorInterceptor)
 export class ReservationsStatesController {
   constructor(
     @Inject(ROOMS_MS)
