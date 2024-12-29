@@ -1,3 +1,4 @@
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { ReservationStateResponseDto } from './dto/response';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
@@ -13,6 +14,7 @@ import {
   Param,
   Patch,
   Inject,
+  Delete,
   Controller,
 } from '@nestjs/common';
 
@@ -57,6 +59,16 @@ export class ReservationsStatesController {
   ): Promise<ReservationStateResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'update.reservation.state' }, request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(reservationStateId: string): Promise<DeleteResultResponse> {
+    return await firstValueFrom(
+      this.roomsClient.send(
+        { cmd: 'remove.reservation.state' },
+        { reservationStateId },
+      ),
     );
   }
 }
