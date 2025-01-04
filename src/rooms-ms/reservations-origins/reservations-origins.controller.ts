@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -14,6 +15,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { ROOMS_MS } from 'src/config';
 
+import { DeleteResultResponse } from 'src/common/dto/response';
 import {
   CreateReservationOriginDto,
   UpdateReservationOriginDto,
@@ -61,6 +63,18 @@ export class ReservationsOriginsController {
   ): Promise<ReservationOriginResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'update.reservation.origin' }, request),
+    );
+  }
+
+  @Delete()
+  async remove(
+    @Param('id', ParseUUIDPipe) reservationOriginId: string,
+  ): Promise<DeleteResultResponse> {
+    return await firstValueFrom(
+      this.roomsClient.send(
+        { cmd: 'remove.reservation.origin' },
+        { reservationOriginId },
+      ),
     );
   }
 }
