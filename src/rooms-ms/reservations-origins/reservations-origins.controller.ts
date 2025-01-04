@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Param, ParseUUIDPipe } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +18,18 @@ export class ReservationsOriginsController {
   async findAll(): Promise<ReservationOriginResponseDto[]> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'find.all.reservations.origins' }, {}),
+    );
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) reservationOriginId: string,
+  ): Promise<ReservationOriginResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send(
+        { cmd: 'find.one.reservation.origin' },
+        { reservationOriginId },
+      ),
     );
   }
 }
