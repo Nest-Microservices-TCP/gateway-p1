@@ -5,6 +5,7 @@ import {
   Inject,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -13,7 +14,10 @@ import { firstValueFrom } from 'rxjs';
 
 import { ROOMS_MS } from 'src/config';
 
-import { CreateReservationOriginDto } from './dto/request';
+import {
+  CreateReservationOriginDto,
+  UpdateReservationOriginDto,
+} from './dto/request';
 import { ReservationOriginResponseDto } from './dto/response';
 
 @Controller('reservations-origins')
@@ -48,6 +52,15 @@ export class ReservationsOriginsController {
   ): Promise<ReservationOriginResponseDto> {
     return await firstValueFrom(
       this.roomsClient.send({ cmd: 'save.reservation.origin' }, request),
+    );
+  }
+
+  @Patch()
+  async update(
+    @Body() request: UpdateReservationOriginDto,
+  ): Promise<ReservationOriginResponseDto> {
+    return await firstValueFrom(
+      this.roomsClient.send({ cmd: 'update.reservation.origin' }, request),
     );
   }
 }
