@@ -8,8 +8,11 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
 
 import { firstValueFrom } from 'rxjs';
 
@@ -23,6 +26,7 @@ import {
 import { ReservationOriginResponseDto } from './dto/response';
 
 @Controller('reservations-origins')
+@UseInterceptors(ErrorInterceptor)
 export class ReservationsOriginsController {
   constructor(
     @Inject(ROOMS_MS)
