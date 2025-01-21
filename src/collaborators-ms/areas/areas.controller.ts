@@ -1,21 +1,24 @@
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateAreaDto, UpdateAreaDto } from './dto/request';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { ClientProxy } from '@nestjs/microservices';
-import { AreaResponseDto } from './dto/response';
-import { COLLABORATORS_MS } from 'src/config';
-import { firstValueFrom } from 'rxjs';
 import {
-  Get,
-  Post,
   Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
   Param,
   Patch,
-  Inject,
-  Delete,
-  Controller,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { COLLABORATORS_MS } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateAreaDto, UpdateAreaDto } from './dto/request';
+import { AreaResponseDto } from './dto/response';
 
 @Controller('areas')
 @UseInterceptors(ErrorInterceptor)
