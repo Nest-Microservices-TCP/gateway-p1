@@ -1,25 +1,28 @@
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { CollaboratorResponseDto } from './dto/response';
-import { ClientProxy } from '@nestjs/microservices';
-import { COLLABORATORS_MS } from 'src/config';
-import { firstValueFrom } from 'rxjs';
 import {
-  UpdateCollaboratorDto,
-  CreateCollaboratorDto,
-  FindOneCollaboratorById,
-} from './dto/request';
-import {
-  Get,
-  Post,
   Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
   Param,
   Patch,
-  Delete,
-  Inject,
-  Controller,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { COLLABORATORS_MS } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import {
+  CreateCollaboratorDto,
+  FindOneCollaboratorById,
+  UpdateCollaboratorDto,
+} from './dto/request';
+import { CollaboratorResponseDto } from './dto/response';
 
 @Controller('collaborators')
 @UseInterceptors(ErrorInterceptor)
