@@ -1,6 +1,7 @@
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { COLLABORATORS_MS, envs } from 'src/config';
 import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
+import { COLLABORATORS_MS, envs } from 'src/config';
 
 @Module({
   imports: [
