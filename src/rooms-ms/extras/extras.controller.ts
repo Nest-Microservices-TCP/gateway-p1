@@ -1,21 +1,24 @@
-import { CreateExtraDto, UpdateExtraDto } from './dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { ClientProxy } from '@nestjs/microservices';
-import { ExtraResponseDto } from './dto/response';
-import { firstValueFrom } from 'rxjs';
-import { ROOMS_MS } from 'src/config';
 import {
-  Get,
   Body,
-  Post,
+  Controller,
+  Delete,
+  Get,
+  Inject,
   Param,
   Patch,
-  Delete,
-  Inject,
-  Controller,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { ROOMS_MS } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateExtraDto, UpdateExtraDto } from './dto/request';
+import { ExtraResponseDto } from './dto/response';
 
 @Controller('extras')
 @UseInterceptors(ErrorInterceptor)
