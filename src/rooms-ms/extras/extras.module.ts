@@ -1,6 +1,8 @@
-import { ExtrasController } from './extras.controller';
-import { RoomsClientMS } from 'src/providers';
 import { Module } from '@nestjs/common';
+
+import { RoomsClientMS } from 'src/providers';
+
+import { ExtrasController } from './extras.controller';
 
 @Module({
   imports: [RoomsClientMS],
