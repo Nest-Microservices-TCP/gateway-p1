@@ -1,21 +1,24 @@
-import { CreatePositionDto, UpdatePositionDto } from './dto/request';
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { PositionResponseDto } from './dto/response';
-import { ClientProxy } from '@nestjs/microservices';
-import { COLLABORATORS_MS } from 'src/config';
-import { firstValueFrom } from 'rxjs';
 import {
-  Get,
-  Post,
   Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
   Param,
   Patch,
-  Delete,
-  Inject,
-  Controller,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { COLLABORATORS_MS } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreatePositionDto, UpdatePositionDto } from './dto/request';
+import { PositionResponseDto } from './dto/response';
 
 @Controller('positions')
 @UseInterceptors(ErrorInterceptor)
