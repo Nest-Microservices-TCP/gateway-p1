@@ -1,6 +1,8 @@
-import { CollaboratorsController } from './collaborators.controller';
-import { CollaboratorsClient } from 'src/providers';
 import { Module } from '@nestjs/common';
+
+import { CollaboratorsClient } from 'src/providers';
+
+import { CollaboratorsController } from './collaborators.controller';
 
 @Module({
   imports: [CollaboratorsClient],
