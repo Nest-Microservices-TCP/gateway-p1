@@ -1,6 +1,8 @@
-import { ReservationsStatesController } from './reservations-states.controller';
-import { RoomsClientMS } from 'src/providers';
 import { Module } from '@nestjs/common';
+
+import { RoomsClientMS } from 'src/providers';
+
+import { ReservationsStatesController } from './reservations-states.controller';
 
 @Module({
   imports: [RoomsClientMS],
