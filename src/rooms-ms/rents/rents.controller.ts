@@ -1,22 +1,25 @@
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { CreateRoomDto } from '../rooms/dto/request';
-import { ClientProxy } from '@nestjs/microservices';
-import { RentResponseDto } from './dto/response';
-import { UpdateRentDto } from './dto/request';
-import { firstValueFrom } from 'rxjs';
-import { ROOMS_MS } from 'src/config';
 import {
-  Get,
   Body,
-  Post,
+  Controller,
+  Delete,
+  Get,
+  Inject,
   Param,
   Patch,
-  Inject,
-  Delete,
-  Controller,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { ROOMS_MS } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreateRoomDto } from '../rooms/dto/request';
+import { UpdateRentDto } from './dto/request';
+import { RentResponseDto } from './dto/response';
 
 @Controller('rents')
 @UseInterceptors(ErrorInterceptor)
