@@ -1,20 +1,23 @@
-import { CreateReservationDto, UpdateReservationDto } from './dto/request';
-import { ErrorInterceptor } from 'src/common/interceptors';
-import { ReservationResponseDto } from './dto/response';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { ROOMS_MS } from 'src/config';
 import {
-  Get,
   Body,
-  Post,
-  Patch,
-  Param,
-  Delete,
-  Inject,
   Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Patch,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { ROOMS_MS } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { CreateReservationDto, UpdateReservationDto } from './dto/request';
+import { ReservationResponseDto } from './dto/response';
 
 @Controller('reservations')
 @UseInterceptors(ErrorInterceptor)
