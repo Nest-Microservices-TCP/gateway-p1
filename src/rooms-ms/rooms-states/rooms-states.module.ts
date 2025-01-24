@@ -1,6 +1,8 @@
-import { RoomStatesController } from './rooms-states.controller';
-import { RoomsClientMS } from 'src/providers';
 import { Module } from '@nestjs/common';
+
+import { RoomsClientMS } from 'src/providers';
+
+import { RoomStatesController } from './rooms-states.controller';
 
 @Module({
   imports: [RoomsClientMS],
