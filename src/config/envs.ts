@@ -9,6 +9,9 @@ interface EnvVars {
 
   COLLABORATORS_PORT: number;
   COLLABORATORS_HOST: string;
+
+  TRANSACTIONS_PORT: number;
+  TRANSACTIONS_HOST: string;
 }
 
 const envSchema = joi
@@ -20,6 +23,9 @@ const envSchema = joi
 
     COLLABORATORS_PORT: joi.number().required(),
     COLLABORATORS_HOST: joi.string().required(),
+
+    TRANSACTIONS_PORT: joi.number().required(),
+    TRANSACTIONS_HOST: joi.string().required(),
   })
   .unknown(true);
 
@@ -39,4 +45,7 @@ export const envs = {
 
   collaboratorsPort: envVars.COLLABORATORS_PORT,
   collaboratorsHost: envVars.COLLABORATORS_HOST,
+
+  transactionsPort: envVars.TRANSACTIONS_PORT,
+  transactionsHost: envVars.TRANSACTIONS_HOST,
 };
