@@ -1,4 +1,68 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+
+import { TRANSACTIONS_MICROSERVICE } from 'src/config';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
+
+import { DeleteResultResponse } from 'src/common/dto/response';
+import { CreatePaymentDto, UpdatePaymentDto } from './dto/request';
+import { PaymentResponseDto } from './dto/response';
 
 @Controller('payments')
-export class PaymentsController {}
+@UseInterceptors(ErrorInterceptor)
+export class PaymentsController {
+  constructor(
+    @Inject(TRANSACTIONS_MICROSERVICE)
+    private readonly transactionsClient: ClientProxy,
+  ) {}
+
+  @Get('payments')
+  async findAll(): Promise<PaymentResponseDto[]> {
+    return firstValueFrom(
+      this.transactionsClient.send({ cmd: 'find.all.payments' }, {}),
+    );
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) paymentId: string,
+  ): Promise<PaymentResponseDto> {
+    return firstValueFrom(
+      this.transactionsClient.send({ cmd: 'find.one.payment' }, { paymentId }),
+    );
+  }
+
+  @Post()
+  async save(@Body() request: CreatePaymentDto): Promise<PaymentResponseDto> {
+    return firstValueFrom(
+      this.transactionsClient.send({ cmd: 'save.payment' }, request),
+    );
+  }
+
+  @Patch(':id')
+  async update(@Body() request: UpdatePaymentDto): Promise<PaymentResponseDto> {
+    return firstValueFrom(
+      this.transactionsClient.send({ cdm: 'update.payment' }, request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') paymentId: string): Promise<DeleteResultResponse> {
+    return firstValueFrom(
+      this.transactionsClient.send({ cmd: 'remove.payment' }, { paymentId }),
+    );
+  }
+}
