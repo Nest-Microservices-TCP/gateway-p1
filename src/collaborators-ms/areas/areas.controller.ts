@@ -12,7 +12,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { COLLABORATORS_MS } from 'src/config';
+import { COLLABORATORS_MICROSERVICE } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -24,7 +24,7 @@ import { AreaResponseDto } from './dto/response';
 @UseInterceptors(ErrorInterceptor)
 export class AreasController {
   constructor(
-    @Inject(COLLABORATORS_MS)
+    @Inject(COLLABORATORS_MICROSERVICE)
     private readonly collaboratorsClient: ClientProxy,
   ) {}
 
