@@ -12,7 +12,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { ROOMS_MS } from 'src/config';
+import { ROOMS_MICROSERVICE } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -25,7 +25,7 @@ import { RentResponseDto } from './dto/response';
 @UseInterceptors(ErrorInterceptor)
 export class RentsController {
   constructor(
-    @Inject(ROOMS_MS)
+    @Inject(ROOMS_MICROSERVICE)
     private roomsClient: ClientProxy,
   ) {}
 

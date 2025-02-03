@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { ROOMS_MS, envs } from 'src/config';
+import { ROOMS_MICROSERVICE, envs } from 'src/config';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: ROOMS_MS,
+        name: ROOMS_MICROSERVICE,
         transport: Transport.TCP,
         options: {
           host: envs.roomsHost,
@@ -19,7 +19,7 @@ import { ROOMS_MS, envs } from 'src/config';
   exports: [
     ClientsModule.register([
       {
-        name: ROOMS_MS,
+        name: ROOMS_MICROSERVICE,
         transport: Transport.TCP,
         options: {
           host: envs.roomsHost,
