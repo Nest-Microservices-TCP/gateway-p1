@@ -7,10 +7,10 @@ import { WorkShiftsModule } from './work-shifts/work-shifts.module';
 
 @Module({
   imports: [
-    CollaboratorsModule,
     AreasModule,
     PositionsModule,
     WorkShiftsModule,
+    CollaboratorsModule,
   ],
 })
 export class CollaboratorsMSModule {}
