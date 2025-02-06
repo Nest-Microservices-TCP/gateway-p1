@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { CollaboratorsClient } from 'src/providers';
+import { CollaboratorsClientMS } from 'src/providers';
 
 import { WorkShiftsController } from './work-shifts.controller';
 
 @Module({
-  imports: [CollaboratorsClient],
+  imports: [CollaboratorsClientMS],
   controllers: [WorkShiftsController],
 })
 export class WorkShiftsModule {}
