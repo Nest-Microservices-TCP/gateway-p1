@@ -4,7 +4,7 @@ import { Expose } from 'class-transformer';
 
 export class RateResponseDto extends BaseResponseDto {
   @Expose()
-  rate_id: string;
+  rateId: string;
 
   @Expose()
   name: string;
