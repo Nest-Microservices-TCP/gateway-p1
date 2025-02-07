@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
 
-@Module({})
+import { PaymentsModule } from './payments/payments.module';
+
+@Module({
+  imports: [PaymentsModule],
+})
 export class TransactionsMSModule {}
