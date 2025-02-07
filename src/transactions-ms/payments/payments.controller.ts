@@ -10,10 +10,11 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka, ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
 import { TRANSACTIONS_MICROSERVICE } from 'src/config';
+import { TRANSACTIONS_KAFKA_CLIENT } from 'src/kafka-clients';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -27,12 +28,23 @@ export class PaymentsController {
   constructor(
     @Inject(TRANSACTIONS_MICROSERVICE)
     private readonly transactionsClient: ClientProxy,
+    @Inject(TRANSACTIONS_KAFKA_CLIENT)
+    private readonly transactionsClientKafka: ClientKafka,
   ) {}
 
-  @Get('payments')
-  async findAll(): Promise<PaymentResponseDto[]> {
-    return firstValueFrom(
-      this.transactionsClient.send({ cmd: 'find.all.payments' }, {}),
+  async onModuleInit() {
+    this.transactionsClientKafka.subscribeToResponseOf(
+      'transactions.find.all.payments',
+    );
+
+    await this.transactionsClientKafka.connect();
+  }
+
+  @Get()
+  async findAll() {
+    return this.transactionsClientKafka.send(
+      'transactions.find.all.payments',
+      {},
     );
   }
 
