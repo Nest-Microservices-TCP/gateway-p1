@@ -1,19 +1,21 @@
-import { AccommodationType, EntryType } from '../../enum';
 import {
-  Min,
+  IsBoolean,
   IsEnum,
   IsNumber,
-  IsString,
-  MaxLength,
-  IsPositive,
   IsOptional,
+  IsPositive,
+  IsString,
+  IsUUID,
+  MaxLength,
+  Min,
 } from 'class-validator';
+import { AccommodationType, EntryType } from '../../enum';
 
 export class CreateRentDto {
   @IsString()
   @MaxLength(255)
   @IsOptional()
-  guestName: string;
+  guestName?: string;
 
   @IsEnum(AccommodationType)
   accommodationType: AccommodationType;
@@ -28,19 +30,26 @@ export class CreateRentDto {
 
   @IsNumber()
   @IsPositive()
-  @IsOptional()
   @Min(1)
-  extraAccommodations: number;
+  @IsOptional()
+  extraAccommodations?: number;
 
   @IsNumber()
   @IsPositive()
-  @IsOptional()
   @Min(1)
-  extraPeople: number;
+  @IsOptional()
+  extraPeople?: number;
 
   @IsNumber()
   @IsPositive()
-  @IsOptional()
   @Min(1)
-  overtime: number;
+  @IsOptional()
+  overtime?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  earlyCheckIn?: boolean = false;
+
+  @IsUUID('4')
+  rateId: string;
 }
