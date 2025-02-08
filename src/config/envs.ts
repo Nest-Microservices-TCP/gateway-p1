@@ -4,28 +4,26 @@ import * as joi from 'joi';
 interface EnvVars {
   GATEWAY_PORT: number;
 
-  ROOMS_MICROSERVICE_PORT: number;
-  ROOMS_MICROSERVICE_HOST: string;
+  // ROOMS_MICROSERVICE_PORT: number;
+  // ROOMS_MICROSERVICE_HOST: string;
 
-  COLLABORATORS_MICROSERVICE_PORT: number;
-  COLLABORATORS_MICROSERVICE_HOST: string;
+  KAFKA_BROKER: string;
 
-  TRANSACTIONS_MICROSERVICE_PORT: number;
-  TRANSACTIONS_MICROSERVICE_HOST: string;
+  ROOMS_KAFKA_CLIENT_ID: string;
+  ROOMS_KAFKA_GROUP_ID: string;
 }
 
 const envSchema = joi
   .object({
     GATEWAY_PORT: joi.number().required(),
 
-    ROOMS_MICROSERVICE_PORT: joi.number().required(),
-    ROOMS_MICROSERVICE_HOST: joi.string().required(),
+    // ROOMS_MICROSERVICE_PORT: joi.number().required(),
+    // ROOMS_MICROSERVICE_HOST: joi.string().required(),
 
-    COLLABORATORS_MICROSERVICE_PORT: joi.number().required(),
-    COLLABORATORS_MICROSERVICE_HOST: joi.string().required(),
+    KAFKA_BROKER: joi.string().required(),
 
-    TRANSACTIONS_MICROSERVICE_PORT: joi.number().required(),
-    TRANSACTIONS_MICROSERVICE_HOST: joi.string().required(),
+    ROOMS_KAFKA_CLIENT_ID: joi.string().required(),
+    ROOMS_KAFKA_GROUP_ID: joi.string().required(),
   })
   .unknown(true);
 
@@ -40,12 +38,11 @@ const envVars: EnvVars = value;
 export const envs = {
   gatewayPort: envVars.GATEWAY_PORT,
 
-  roomsPort: envVars.ROOMS_MICROSERVICE_PORT,
-  roomsHost: envVars.ROOMS_MICROSERVICE_HOST,
+  // roomsPort: envVars.ROOMS_MICROSERVICE_PORT,
+  // roomsHost: envVars.ROOMS_MICROSERVICE_HOST,
 
-  collaboratorsPort: envVars.COLLABORATORS_MICROSERVICE_PORT,
-  collaboratorsHost: envVars.COLLABORATORS_MICROSERVICE_HOST,
+  KAFKA_BROKER: envVars.KAFKA_BROKER,
 
-  transactionsPort: envVars.TRANSACTIONS_MICROSERVICE_PORT,
-  transactionsHost: envVars.TRANSACTIONS_MICROSERVICE_HOST,
+  ROOMS_KAFKA_CLIENT_ID: envVars.ROOMS_KAFKA_CLIENT_ID,
+  ROOMS_KAFKA_GROUP_ID: envVars.ROOMS_KAFKA_GROUP_ID,
 };
