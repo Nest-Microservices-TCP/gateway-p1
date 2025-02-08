@@ -1,62 +1,29 @@
 import {
   Body,
   Controller,
-  Delete,
-  Get,
   Inject,
-  Param,
-  Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { ROOMS_MICROSERVICE } from 'src/config';
+import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateRoomDto } from '../rooms/dto/request';
-import { UpdateRentDto } from './dto/request';
-import { RentResponseDto } from './dto/response';
+import { CreateRentDto } from './dto/request';
 
 @Controller('rents')
 @UseInterceptors(ErrorInterceptor)
 export class RentsController {
   constructor(
-    @Inject(ROOMS_MICROSERVICE)
-    private roomsClient: ClientProxy,
+    @Inject(ROOMS_CLIENT_KAFKA)
+    private readonly roomsClientKafka: ClientKafka,
   ) {}
 
   @Post()
-  async save(@Body() request: CreateRoomDto): Promise<RentResponseDto> {
-    return firstValueFrom(this.roomsClient.send({ cmd: 'save.rent' }, request));
-  }
-
-  @Get()
-  async findAll(): Promise<RentResponseDto[]> {
-    return firstValueFrom(this.roomsClient.send({ cmd: 'find.all.rents' }, {}));
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') rentId: string): Promise<RentResponseDto> {
-    return firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.one.rent' }, { rentId }),
-    );
-  }
-
-  @Patch()
-  async update(@Body() request: UpdateRentDto): Promise<RentResponseDto> {
-    return firstValueFrom(
-      this.roomsClient.send({ cmd: 'update.rent' }, request),
-    );
-  }
-
-  @Delete(':id')
-  async remove(@Param('rentId') rentId: string): Promise<DeleteResultResponse> {
-    return firstValueFrom(
-      this.roomsClient.send({ cmd: 'remove.rent.by.id' }, { rentId }),
-    );
+  async save(@Body() request: CreateRentDto) {
+    return firstValueFrom(this.roomsClientKafka.emit('rent.created', request));
   }
 }
