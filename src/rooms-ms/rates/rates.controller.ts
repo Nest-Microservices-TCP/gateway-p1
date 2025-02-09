@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   Inject,
   Param,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
@@ -13,6 +15,7 @@ import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
+import { CreateRateDto } from './dto/request';
 import { RateResponseDto } from './dto/response';
 
 @Controller('rates')
@@ -28,6 +31,7 @@ export class RatesController {
   async onModuleInit() {
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rates');
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rate');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.save.rate');
   }
 
   @Get()
@@ -49,6 +53,13 @@ export class RatesController {
   async findOne(@Param('id') rateId: string): Promise<RateResponseDto> {
     return firstValueFrom(
       this.roomsClientKafka.send('rooms.find.one.rate', { rateId }),
+    );
+  }
+
+  @Post()
+  async save(@Body() request: CreateRateDto): Promise<RateResponseDto> {
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.save.rate', request),
     );
   }
 }
