@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -16,6 +17,7 @@ import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreateRateDto, UpdateRateDto } from './dto/request';
 import { RateResponseDto } from './dto/response';
 
@@ -68,6 +70,13 @@ export class RatesController {
   async update(@Body() request: UpdateRateDto): Promise<RateResponseDto> {
     return firstValueFrom(
       this.roomsClientKafka.send('rooms.update.rate', request),
+    );
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') rateId: string): Promise<DeleteResultResponse> {
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.remove.rate', { rateId }),
     );
   }
 }
