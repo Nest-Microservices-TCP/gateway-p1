@@ -35,6 +35,7 @@ export class RatesController {
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rates');
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rate');
     this.roomsClientKafka.subscribeToResponseOf('rooms.save.rate');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.update.rate');
   }
 
   @Get()
