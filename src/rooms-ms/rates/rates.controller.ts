@@ -4,6 +4,7 @@ import {
   Get,
   Inject,
   Param,
+  Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,7 +16,7 @@ import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { CreateRateDto } from './dto/request';
+import { CreateRateDto, UpdateRateDto } from './dto/request';
 import { RateResponseDto } from './dto/response';
 
 @Controller('rates')
@@ -60,6 +61,13 @@ export class RatesController {
   async save(@Body() request: CreateRateDto): Promise<RateResponseDto> {
     return firstValueFrom(
       this.roomsClientKafka.send('rooms.save.rate', request),
+    );
+  }
+
+  @Patch()
+  async update(@Body() request: UpdateRateDto): Promise<RateResponseDto> {
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.update.rate', request),
     );
   }
 }
