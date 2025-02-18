@@ -9,10 +9,10 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { ROOMS_MICROSERVICE } from 'src/config';
+import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -24,14 +24,18 @@ import { ExtraResponseDto } from './dto/response';
 @UseInterceptors(ErrorInterceptor)
 export class ExtrasController {
   constructor(
-    @Inject(ROOMS_MICROSERVICE)
-    private readonly roomsClient: ClientProxy,
+    @Inject(ROOMS_CLIENT_KAFKA)
+    private readonly roomsClientKafka: ClientKafka,
   ) {}
+
+  async onModuleInit() {
+    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.extras');
+  }
 
   @Get()
   async findAll(): Promise<ExtraResponseDto[]> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.all.extras' }, {}),
+      this.roomsClientKafka.send('rooms.find.all.extras', {}),
     );
   }
 
