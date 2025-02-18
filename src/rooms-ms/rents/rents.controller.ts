@@ -5,6 +5,7 @@ import {
   Inject,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,7 +16,7 @@ import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { CreateRentDto } from './dto/request';
+import { CreateRentDto, UpdateRentDto } from './dto/request';
 import { RentResponseDto } from './dto/response';
 
 @Controller('rents')
@@ -30,6 +31,7 @@ export class RentsController {
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rents');
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rent');
     this.roomsClientKafka.subscribeToResponseOf('rooms.save.rent');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.update.rent');
   }
 
   @Get()
@@ -52,6 +54,13 @@ export class RentsController {
   async save(@Body() request: CreateRentDto) {
     return firstValueFrom(
       this.roomsClientKafka.send('rooms.save.rent', request),
+    );
+  }
+
+  @Patch()
+  async update(@Body() request: UpdateRentDto): Promise<RentResponseDto> {
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.update.room', request),
     );
   }
 }
