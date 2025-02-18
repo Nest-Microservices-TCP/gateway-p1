@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
+  ParseUUIDPipe,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -26,6 +28,7 @@ export class RentsController {
 
   async onModuleInit() {
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rents');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rent');
     this.roomsClientKafka.subscribeToResponseOf('rooms.save.rent');
   }
 
@@ -33,6 +36,15 @@ export class RentsController {
   async findAll(): Promise<RentResponseDto[]> {
     return firstValueFrom(
       this.roomsClientKafka.send('rooms.find.all.rents', {}),
+    );
+  }
+
+  @Get('id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) rentId: string,
+  ): Promise<RentResponseDto> {
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.find.one.rent', { rentId }),
     );
   }
 
