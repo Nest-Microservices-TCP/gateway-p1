@@ -22,8 +22,14 @@ export class RentsController {
     private readonly roomsClientKafka: ClientKafka,
   ) {}
 
+  async onModuleInit() {
+    this.roomsClientKafka.subscribeToResponseOf('rooms.save.rent');
+  }
+
   @Post()
   async save(@Body() request: CreateRentDto) {
-    return firstValueFrom(this.roomsClientKafka.emit('rent.created', request));
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.save.rent', request),
+    );
   }
 }
