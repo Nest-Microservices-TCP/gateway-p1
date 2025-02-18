@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Post,
   UseInterceptors,
@@ -13,6 +14,7 @@ import { ROOMS_CLIENT_KAFKA } from 'src/config';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
 import { CreateRentDto } from './dto/request';
+import { RentResponseDto } from './dto/response';
 
 @Controller('rents')
 @UseInterceptors(ErrorInterceptor)
@@ -23,7 +25,15 @@ export class RentsController {
   ) {}
 
   async onModuleInit() {
+    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rents');
     this.roomsClientKafka.subscribeToResponseOf('rooms.save.rent');
+  }
+
+  @Get()
+  async findAll(): Promise<RentResponseDto[]> {
+    return firstValueFrom(
+      this.roomsClientKafka.send('rooms.find.all.rents', {}),
+    );
   }
 
   @Post()
