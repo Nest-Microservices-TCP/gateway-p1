@@ -30,6 +30,10 @@ export class ExtrasController {
 
   async onModuleInit() {
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.extras');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.extra');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.save.extra');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.update.extra');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.remove.extra');
   }
 
   @Get()
@@ -42,28 +46,28 @@ export class ExtrasController {
   @Get(':id')
   async findOne(@Param('id') extraId: string): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.one.extra' }, { extraId }),
+      this.roomsClientKafka.send('rooms.find.one.extra', { extraId }),
     );
   }
 
   @Post()
   async save(@Body() request: CreateExtraDto): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'save.extra' }, request),
+      this.roomsClientKafka.send('rooms.save.extra', request),
     );
   }
 
   @Patch()
   async update(@Body() request: UpdateExtraDto): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'update.extra' }, request),
+      this.roomsClientKafka.send('rooms.update.extra', request),
     );
   }
 
   @Delete(':id')
   async remove(@Param('id') extraId: string): Promise<DeleteResultResponse> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'remove.extra.by.id' }, { extraId }),
+      this.roomsClientKafka.send('rooms.remove.extra', { extraId }),
     );
   }
 }
