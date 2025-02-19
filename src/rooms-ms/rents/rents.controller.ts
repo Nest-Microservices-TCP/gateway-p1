@@ -34,6 +34,7 @@ export class RentsController {
     this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rent');
     this.roomsClientKafka.subscribeToResponseOf('rooms.save.rent');
     this.roomsClientKafka.subscribeToResponseOf('rooms.update.rent');
+    this.roomsClientKafka.subscribeToResponseOf('rooms.remove.rent');
   }
 
   @Get()
