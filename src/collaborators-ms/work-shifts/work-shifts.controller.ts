@@ -4,15 +4,16 @@ import {
   Delete,
   Get,
   Inject,
+  OnModuleInit,
   Param,
   Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { COLLABORATORS_MICROSERVICE } from 'src/config';
+import { COLLABORATORS_KAFKA_CLIENT } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -22,50 +23,83 @@ import { WorkShiftResponseDto } from './dto/response';
 
 @UseInterceptors(ErrorInterceptor)
 @Controller('work-shifts')
-export class WorkShiftsController {
+export class WorkShiftsController implements OnModuleInit {
   constructor(
-    @Inject(COLLABORATORS_MICROSERVICE)
-    private readonly collaboratorsClient: ClientProxy,
+    @Inject(COLLABORATORS_KAFKA_CLIENT)
+    private readonly collaboratorsClientKafka: ClientKafka,
   ) {}
 
+  onModuleInit() {
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.find.all.workShifts',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.find.one.workShift',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.save.workShift',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.update.workShift',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.remove.workShift',
+    );
+  }
+
   @Get()
-  findAll(): Promise<WorkShiftResponseDto[]> {
+  async findAll(): Promise<WorkShiftResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'find.all.work.shifts' }, {}),
+      this.collaboratorsClientKafka.send(
+        'collaborators.find.all.workShifts',
+        {},
+      ),
     );
   }
 
   @Get(':id')
-  findOne(@Param('id') workShiftId: string): Promise<WorkShiftResponseDto> {
+  async findOne(
+    @Param('id') workShiftId: string,
+  ): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send(
-        { cmd: 'find.one.work.shift' },
-        { workShiftId },
-      ),
+      this.collaboratorsClientKafka.send('collaborators.find.one.workShift', {
+        workShiftId,
+      }),
     );
   }
 
   @Post()
-  save(@Body() request: CreateWorkShiftDto): Promise<WorkShiftResponseDto> {
+  async save(
+    @Body() request: CreateWorkShiftDto,
+  ): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'save.work.shift' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.save.workShift',
+        request,
+      ),
     );
   }
 
   @Patch()
-  update(@Body() request: UpdateWorkShiftDto): Promise<WorkShiftResponseDto> {
+  async update(
+    @Body() request: UpdateWorkShiftDto,
+  ): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'update.work.shift' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.update.workShift',
+        request,
+      ),
     );
   }
 
   @Delete()
-  remove(@Param('id') workShiftId: string): Promise<DeleteResultResponse> {
+  async remove(
+    @Param('id') workShiftId: string,
+  ): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClient.send(
-        { cmd: 'remove.work.shift.by.id' },
-        { workShiftId },
-      ),
+      this.collaboratorsClientKafka.send('collaborators.remove.workShift', {
+        workShiftId,
+      }),
     );
   }
 }
