@@ -4,15 +4,16 @@ import {
   Delete,
   Get,
   Inject,
+  OnModuleInit,
   Param,
   Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { COLLABORATORS_MICROSERVICE } from 'src/config';
+import { COLLABORATORS_KAFKA_CLIENT } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -22,50 +23,77 @@ import { PositionResponseDto } from './dto/response';
 
 @Controller('positions')
 @UseInterceptors(ErrorInterceptor)
-export class PositionsController {
+export class PositionsController implements OnModuleInit {
   constructor(
-    @Inject(COLLABORATORS_MICROSERVICE)
-    private readonly collaboratorsClient: ClientProxy,
+    @Inject(COLLABORATORS_KAFKA_CLIENT)
+    private readonly collaboratorsClientKafka: ClientKafka,
   ) {}
 
+  onModuleInit() {
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.find.all.positions',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.find.one.position',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.save.position',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.update.position',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.remove.position',
+    );
+  }
+
   @Get()
-  findAll(): Promise<PositionResponseDto[]> {
+  async findAll(): Promise<PositionResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'find.all.positions' }, {}),
+      this.collaboratorsClientKafka.send(
+        'collaborators.find.all.positions',
+        {},
+      ),
     );
   }
 
   @Get(':id')
-  findOne(@Param('id') positionId: string): Promise<PositionResponseDto> {
+  async findOne(@Param('id') positionId: string): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send(
-        { cmd: 'find.one.position' },
-        { positionId },
-      ),
+      this.collaboratorsClientKafka.send('collaborators.find.one.position', {
+        positionId,
+      }),
     );
   }
 
   @Post()
-  save(@Body() request: CreatePositionDto): Promise<PositionResponseDto> {
+  async save(@Body() request: CreatePositionDto): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'save.position' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.save.position',
+        request,
+      ),
     );
   }
 
   @Patch()
-  update(@Body() request: UpdatePositionDto): Promise<PositionResponseDto> {
+  async update(
+    @Body() request: UpdatePositionDto,
+  ): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'update.position' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.update.position',
+        request,
+      ),
     );
   }
 
   @Delete(':id')
-  remove(@Param('id') positionId: string): Promise<DeleteResultResponse> {
+  async remove(@Param('id') positionId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClient.send(
-        { cmd: 'remove.position.by.id' },
-        { positionId },
-      ),
+      this.collaboratorsClientKafka.send('collaborators.remove.position', {
+        positionId,
+      }),
     );
   }
 }
