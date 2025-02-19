@@ -4,15 +4,16 @@ import {
   Delete,
   Get,
   Inject,
+  OnModuleInit,
   Param,
   Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { COLLABORATORS_MICROSERVICE } from 'src/config';
+import { COLLABORATORS_KAFKA_CLIENT } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -26,25 +27,49 @@ import { CollaboratorResponseDto } from './dto/response';
 
 @Controller('collaborators')
 @UseInterceptors(ErrorInterceptor)
-export class CollaboratorsController {
+export class CollaboratorsController implements OnModuleInit {
   constructor(
-    @Inject(COLLABORATORS_MICROSERVICE)
-    private readonly collaboratorsClient: ClientProxy,
+    @Inject(COLLABORATORS_KAFKA_CLIENT)
+    private readonly collaboratorsClientKafka: ClientKafka,
   ) {}
+
+  onModuleInit() {
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.save.collaborator',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.find.all.collaborators',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.find.one.collaborator',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.update.collaborator',
+    );
+    this.collaboratorsClientKafka.subscribeToResponseOf(
+      'collaborators.remove.collaborator',
+    );
+  }
 
   @Post()
   async save(
     @Body() request: CreateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
     return await firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'save.collaborator' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.save.collaborator',
+        request,
+      ),
     );
   }
 
   @Get()
   async findAll(): Promise<CollaboratorResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'find.all.collaborators' }, {}),
+      this.collaboratorsClientKafka.send(
+        'collaborators.find.all.collaborators',
+        {},
+      ),
     );
   }
 
@@ -53,7 +78,10 @@ export class CollaboratorsController {
     @Body() request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'find.one.collaborator' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.find.one.collaborator',
+        request,
+      ),
     );
   }
 
@@ -62,7 +90,10 @@ export class CollaboratorsController {
     @Body() request: UpdateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClient.send({ cmd: 'update.collaborator' }, request),
+      this.collaboratorsClientKafka.send(
+        'collaborators.update.collaborator',
+        request,
+      ),
     );
   }
 
@@ -71,10 +102,9 @@ export class CollaboratorsController {
     @Param('id') collaboratorId: string,
   ): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClient.send(
-        { cmd: 'remove.collaborator.by.id' },
-        { collaboratorId },
-      ),
+      this.collaboratorsClientKafka.send('collaborators.remove.collaborator', {
+        collaboratorId,
+      }),
     );
   }
 }
