@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { CollaboratorsClientMS } from 'src/providers';
+import { CollaboratorsKafkaClientModule } from 'src/kafka-clients';
 
 import { WorkShiftsController } from './work-shifts.controller';
 
 @Module({
-  imports: [CollaboratorsClientMS],
+  imports: [CollaboratorsKafkaClientModule],
   controllers: [WorkShiftsController],
 })
 export class WorkShiftsModule {}
