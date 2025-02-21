@@ -4,17 +4,17 @@ import {
   Delete,
   Get,
   Inject,
+  OnModuleInit,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientKafka, ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { TRANSACTIONS_MICROSERVICE } from 'src/config';
-import { TRANSACTIONS_KAFKA_CLIENT } from 'src/kafka-clients';
+import { TRANSACTIONS_KAFKA_CLIENT } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -24,20 +24,19 @@ import { PaymentResponseDto } from './dto/response';
 
 @Controller('payments')
 @UseInterceptors(ErrorInterceptor)
-export class PaymentsController {
+export class PaymentsController implements OnModuleInit {
   constructor(
-    @Inject(TRANSACTIONS_MICROSERVICE)
-    private readonly transactionsClient: ClientProxy,
     @Inject(TRANSACTIONS_KAFKA_CLIENT)
     private readonly transactionsClientKafka: ClientKafka,
   ) {}
 
   async onModuleInit() {
-    this.transactionsClientKafka.subscribeToResponseOf(
-      'transactions.find.all.payments',
-    );
+    this.transactionsClientKafka.subscribeToResponseOf('payments.find.all');
 
-    await this.transactionsClientKafka.connect();
+    this.transactionsClientKafka.subscribeToResponseOf('payments.find.one');
+    this.transactionsClientKafka.subscribeToResponseOf('payments.save');
+    this.transactionsClientKafka.subscribeToResponseOf('payments.update');
+    this.transactionsClientKafka.subscribeToResponseOf('payments.remove');
   }
 
   @Get()
@@ -53,28 +52,33 @@ export class PaymentsController {
     @Param('id', ParseUUIDPipe) paymentId: string,
   ): Promise<PaymentResponseDto> {
     return firstValueFrom(
-      this.transactionsClient.send({ cmd: 'find.one.payment' }, { paymentId }),
+      this.transactionsClientKafka.send('payments.find.one', {
+        paymentId,
+      }),
     );
   }
 
   @Post()
   async save(@Body() request: CreatePaymentDto): Promise<PaymentResponseDto> {
     return firstValueFrom(
-      this.transactionsClient.send({ cmd: 'save.payment' }, request),
+      this.transactionsClientKafka.send('payments.save', request),
     );
   }
 
   @Patch(':id')
   async update(@Body() request: UpdatePaymentDto): Promise<PaymentResponseDto> {
     return firstValueFrom(
-      this.transactionsClient.send({ cdm: 'update.payment' }, request),
+      this.transactionsClientKafka.send('payments.update', request),
     );
   }
 
   @Delete(':id')
   async remove(@Param('id') paymentId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.transactionsClient.send({ cmd: 'remove.payment' }, { paymentId }),
+      this.transactionsClientKafka.send(
+        { cmd: 'payments.remove' },
+        { paymentId },
+      ),
     );
   }
 }
