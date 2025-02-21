@@ -14,6 +14,9 @@ interface EnvVars {
 
   TRANSACTIONS_KAFKA_CLIENT_ID: string;
   TRANSACTIONS_KAFKA_GROUP_ID: string;
+
+  COLLABORATORS_KAFKA_CLIENT_ID: string;
+  COLLABORATORS_KAFKA_GROUP_ID: string;
 }
 
 const envSchema = joi
@@ -30,6 +33,9 @@ const envSchema = joi
 
     TRANSACTIONS_KAFKA_CLIENT_ID: joi.string().required(),
     TRANSACTIONS_KAFKA_GROUP_ID: joi.string().required(),
+
+    COLLABORATORS_KAFKA_CLIENT_ID: joi.string().required(),
+    COLLABORATORS_KAFKA_GROUP_ID: joi.string().required(),
   })
   .unknown(true);
 
@@ -54,4 +60,7 @@ export const envs = {
 
   TRANSACTIONS_KAFKA_CLIENT_ID: envVars.TRANSACTIONS_KAFKA_CLIENT_ID,
   TRANSACTIONS_KAFKA_GROUP_ID: envVars.TRANSACTIONS_KAFKA_GROUP_ID,
+
+  COLLABORATORS_KAFKA_CLIENT_ID: envVars.COLLABORATORS_KAFKA_CLIENT_ID,
+  COLLABORATORS_KAFKA_GROUP_ID: envVars.COLLABORATORS_KAFKA_GROUP_ID,
 };
