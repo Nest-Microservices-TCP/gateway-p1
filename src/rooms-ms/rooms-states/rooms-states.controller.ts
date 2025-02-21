@@ -4,15 +4,16 @@ import {
   Delete,
   Get,
   Inject,
+  OnModuleInit,
   Param,
   Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { ROOMS_MICROSERVICE } from 'src/config';
+import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -22,18 +23,26 @@ import { RoomStateResponseDto } from './dto/response';
 
 @Controller('rooms-states')
 @UseInterceptors(ErrorInterceptor)
-export class RoomStatesController {
+export class RoomStatesController implements OnModuleInit {
   constructor(
-    @Inject(ROOMS_MICROSERVICE)
-    private readonly roomsClient: ClientProxy,
+    @Inject(ROOMS_CLIENT_KAFKA)
+    private readonly roomsClientKafka: ClientKafka,
   ) {}
+
+  onModuleInit() {
+    this.roomsClientKafka.subscribeToResponseOf('roomsStates.save');
+    this.roomsClientKafka.subscribeToResponseOf('roomsStates.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('roomsStates.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('roomsStates.update');
+    this.roomsClientKafka.subscribeToResponseOf('roomsStates.remove');
+  }
 
   @Post()
   async save(
     @Body() request: CreateRoomStateDto,
   ): Promise<RoomStateResponseDto> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'save.roomState' }, request),
+      this.roomsClientKafka.send('roomsStates.save', request),
     );
   }
 
@@ -42,14 +51,14 @@ export class RoomStatesController {
     @Param('id') roomStateId: string,
   ): Promise<RoomStateResponseDto> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.one.roomState' }, { roomStateId }),
+      this.roomsClientKafka.send('roomsStates.find.one', { roomStateId }),
     );
   }
 
   @Get()
   async findAll(): Promise<RoomStateResponseDto[]> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.all.roomsStates' }, {}),
+      this.roomsClientKafka.send('roomsStates.find.all', {}),
     );
   }
 
@@ -58,7 +67,7 @@ export class RoomStatesController {
     @Body() request: UpdateRoomStateDto,
   ): Promise<RoomStateResponseDto> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'update.roomState' }, request),
+      this.roomsClientKafka.send('roomsStates.update', request),
     );
   }
 
@@ -67,7 +76,9 @@ export class RoomStatesController {
     @Param('id') roomStateId: string,
   ): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.roomsClient.send({ cmd: 'remove.roomState.by.id' }, { roomStateId }),
+      this.roomsClientKafka.send('roomsStates.remove', {
+        roomStateId,
+      }),
     );
   }
 }
