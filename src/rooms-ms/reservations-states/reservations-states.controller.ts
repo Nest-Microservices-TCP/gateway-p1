@@ -4,15 +4,17 @@ import {
   Delete,
   Get,
   Inject,
+  OnModuleInit,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import { ROOMS_MICROSERVICE } from 'src/config';
+import { ROOMS_CLIENT_KAFKA } from 'src/config';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -25,28 +27,35 @@ import { ReservationStateResponseDto } from './dto/response';
 
 @Controller('reservations-states')
 @UseInterceptors(ErrorInterceptor)
-export class ReservationsStatesController {
+export class ReservationsStatesController implements OnModuleInit {
   constructor(
-    @Inject(ROOMS_MICROSERVICE)
-    private readonly roomsClient: ClientProxy,
+    @Inject(ROOMS_CLIENT_KAFKA)
+    private readonly roomsClientKafka: ClientKafka,
   ) {}
+
+  onModuleInit() {
+    this.roomsClientKafka.subscribeToResponseOf('reservationsStates.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsStates.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsStates.save');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsStates.update');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsStates.remove');
+  }
 
   @Get()
   async findAll(): Promise<ReservationStateResponseDto[]> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'find.all.reservations.states' }, {}),
+      this.roomsClientKafka.send('reservationsStates.find.all', {}),
     );
   }
 
   @Get(':id')
   async findOne(
-    @Param('id') reservationStateId: string,
+    @Param('id', ParseUUIDPipe) reservationStateId: string,
   ): Promise<ReservationStateResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send(
-        { cmd: 'find.one.reservation.state' },
-        { reservationStateId },
-      ),
+      this.roomsClientKafka.send('reservationsStates.find.one', {
+        reservationStateId,
+      }),
     );
   }
 
@@ -55,7 +64,7 @@ export class ReservationsStatesController {
     @Body() request: CreateReservationStateDto,
   ): Promise<ReservationStateResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'save.reservation.state' }, request),
+      this.roomsClientKafka.send('reservationsStates.save', request),
     );
   }
 
@@ -64,17 +73,18 @@ export class ReservationsStatesController {
     @Body() request: UpdateReservationStateDto,
   ): Promise<ReservationStateResponseDto> {
     return await firstValueFrom(
-      this.roomsClient.send({ cmd: 'update.reservation.state' }, request),
+      this.roomsClientKafka.send('reservationsStates.update', request),
     );
   }
 
   @Delete(':id')
-  async remove(reservationStateId: string): Promise<DeleteResultResponse> {
+  async remove(
+    @Param('id', ParseUUIDPipe) reservationStateId: string,
+  ): Promise<DeleteResultResponse> {
     return await firstValueFrom(
-      this.roomsClient.send(
-        { cmd: 'remove.reservation.state' },
-        { reservationStateId },
-      ),
+      this.roomsClientKafka.send('reservationsStates.remove', {
+        reservationStateId,
+      }),
     );
   }
 }
