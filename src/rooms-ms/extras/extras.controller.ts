@@ -29,45 +29,45 @@ export class ExtrasController {
   ) {}
 
   async onModuleInit() {
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.extras');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.extra');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save.extra');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.update.extra');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.remove.extra');
+    this.roomsClientKafka.subscribeToResponseOf('extras.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('extras.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('extras.save');
+    this.roomsClientKafka.subscribeToResponseOf('extras.update');
+    this.roomsClientKafka.subscribeToResponseOf('extras.remove');
   }
 
   @Get()
   async findAll(): Promise<ExtraResponseDto[]> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.all.extras', {}),
+      this.roomsClientKafka.send('extras.find.all', {}),
     );
   }
 
   @Get(':id')
   async findOne(@Param('id') extraId: string): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.one.extra', { extraId }),
+      this.roomsClientKafka.send('extras.find.one', { extraId }),
     );
   }
 
   @Post()
   async save(@Body() request: CreateExtraDto): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.save.extra', request),
+      this.roomsClientKafka.send('extras.save', request),
     );
   }
 
   @Patch()
   async update(@Body() request: UpdateExtraDto): Promise<ExtraResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.update.extra', request),
+      this.roomsClientKafka.send('extras.update', request),
     );
   }
 
   @Delete(':id')
   async remove(@Param('id') extraId: string): Promise<DeleteResultResponse> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.remove.extra', { extraId }),
+      this.roomsClientKafka.send('extras.remove', { extraId }),
     );
   }
 }
