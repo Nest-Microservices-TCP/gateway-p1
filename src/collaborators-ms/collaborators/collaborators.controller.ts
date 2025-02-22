@@ -34,21 +34,15 @@ export class CollaboratorsController implements OnModuleInit {
   ) {}
 
   onModuleInit() {
+    this.collaboratorsClientKafka.subscribeToResponseOf('collaborators.save');
     this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.save.collaborator',
+      'collaborators.find.all',
     );
     this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.all.collaborators',
+      'collaborators.find.one',
     );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.one.collaborator',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.update.collaborator',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.remove.collaborator',
-    );
+    this.collaboratorsClientKafka.subscribeToResponseOf('collaborators.update');
+    this.collaboratorsClientKafka.subscribeToResponseOf('collaborators.remove');
   }
 
   @Post()
@@ -56,20 +50,14 @@ export class CollaboratorsController implements OnModuleInit {
     @Body() request: CreateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
     return await firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.save.collaborator',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('collaborators.save', request),
     );
   }
 
   @Get()
   async findAll(): Promise<CollaboratorResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.find.all.collaborators',
-        {},
-      ),
+      this.collaboratorsClientKafka.send('collaborators.find.all', {}),
     );
   }
 
@@ -78,10 +66,7 @@ export class CollaboratorsController implements OnModuleInit {
     @Body() request: FindOneCollaboratorById,
   ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.find.one.collaborator',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('collaborators.find.one', request),
     );
   }
 
@@ -90,10 +75,7 @@ export class CollaboratorsController implements OnModuleInit {
     @Body() request: UpdateCollaboratorDto,
   ): Promise<CollaboratorResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.update.collaborator',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('collaborators.update', request),
     );
   }
 
@@ -102,7 +84,7 @@ export class CollaboratorsController implements OnModuleInit {
     @Param('id') collaboratorId: string,
   ): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.remove.collaborator', {
+      this.collaboratorsClientKafka.send('collaborators.remove', {
         collaboratorId,
       }),
     );
