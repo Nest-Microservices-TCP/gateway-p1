@@ -30,41 +30,31 @@ export class AreasController implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.save.area',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.all.areas',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.one.area',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.update.area',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.remove.area',
-    );
+    this.collaboratorsClientKafka.subscribeToResponseOf('areas.find.all');
+    this.collaboratorsClientKafka.subscribeToResponseOf('areas.find.one');
+    this.collaboratorsClientKafka.subscribeToResponseOf('areas.save');
+    this.collaboratorsClientKafka.subscribeToResponseOf('areas.update');
+    this.collaboratorsClientKafka.subscribeToResponseOf('areas.remove');
   }
 
   @Post()
   async save(@Body() request: CreateAreaDto): Promise<AreaResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.save.area', request),
+      this.collaboratorsClientKafka.send('areas.save', request),
     );
   }
 
   @Get()
   async findAll(): Promise<AreaResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.find.all.areas', {}),
+      this.collaboratorsClientKafka.send('areas.find.all', {}),
     );
   }
 
   @Get(':id')
   async findOne(@Param('id') areaId: string): Promise<AreaResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.find.one.area', {
+      this.collaboratorsClientKafka.send('areas.find.one', {
         areaId,
       }),
     );
@@ -73,14 +63,14 @@ export class AreasController implements OnModuleInit {
   @Patch()
   async update(@Body() request: UpdateAreaDto): Promise<AreaResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.update.area', request),
+      this.collaboratorsClientKafka.send('areas.update', request),
     );
   }
 
   @Delete(':id')
   async remove(@Param('id') areaId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.remove.area', {
+      this.collaboratorsClientKafka.send('areas.remove', {
         areaId,
       }),
     );
