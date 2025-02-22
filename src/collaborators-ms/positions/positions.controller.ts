@@ -30,37 +30,24 @@ export class PositionsController implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.all.positions',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.one.position',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.save.position',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.update.position',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.remove.position',
-    );
+    this.collaboratorsClientKafka.subscribeToResponseOf('positions.find.all');
+    this.collaboratorsClientKafka.subscribeToResponseOf('positions.find.one');
+    this.collaboratorsClientKafka.subscribeToResponseOf('positions.save');
+    this.collaboratorsClientKafka.subscribeToResponseOf('positions.update');
+    this.collaboratorsClientKafka.subscribeToResponseOf('positions.remove');
   }
 
   @Get()
   async findAll(): Promise<PositionResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.find.all.positions',
-        {},
-      ),
+      this.collaboratorsClientKafka.send('positions.find.all', {}),
     );
   }
 
   @Get(':id')
   async findOne(@Param('id') positionId: string): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.find.one.position', {
+      this.collaboratorsClientKafka.send('positions.find.one', {
         positionId,
       }),
     );
@@ -69,10 +56,7 @@ export class PositionsController implements OnModuleInit {
   @Post()
   async save(@Body() request: CreatePositionDto): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.save.position',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('positions.save', request),
     );
   }
 
@@ -81,17 +65,14 @@ export class PositionsController implements OnModuleInit {
     @Body() request: UpdatePositionDto,
   ): Promise<PositionResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.update.position',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('positions.update', request),
     );
   }
 
   @Delete(':id')
   async remove(@Param('id') positionId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.remove.position', {
+      this.collaboratorsClientKafka.send('positions.remove', {
         positionId,
       }),
     );
