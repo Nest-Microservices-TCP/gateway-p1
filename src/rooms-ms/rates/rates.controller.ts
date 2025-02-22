@@ -32,53 +32,47 @@ export class RatesController {
   ) {}
 
   async onModuleInit() {
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rates');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rate');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save.rate');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.update.rate');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.remove.rate');
+    this.roomsClientKafka.subscribeToResponseOf('rates.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('rates.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('rates.save');
+    this.roomsClientKafka.subscribeToResponseOf('rates.update');
+    this.roomsClientKafka.subscribeToResponseOf('rates.remove');
   }
 
   @Get()
   async findAll(): Promise<RateResponseDto[]> {
     // return firstValueFrom(
-    //   this.roomsClientKafka.send({ cmd: 'find.all.rates' }, {}),
+    //   this.roomsClientKafka.send({ cmd: 'find.all' }, {}),
     // );
     /**
      * Cuando se trabaja con Kafka, se espera que el primer argumento del .send()
      * sea un string/cadena el cual comienza con el topic hacia el cual se produce
      * el mensaje
      */
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.all.rates', {}),
-    );
+    return firstValueFrom(this.roomsClientKafka.send('rates.find.all', {}));
   }
 
   @Get(':id')
   async findOne(@Param('id') rateId: string): Promise<RateResponseDto> {
     return firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.one.rate', { rateId }),
+      this.roomsClientKafka.send('rates.find.one', { rateId }),
     );
   }
 
   @Post()
   async save(@Body() request: CreateRateDto): Promise<RateResponseDto> {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.save.rate', request),
-    );
+    return firstValueFrom(this.roomsClientKafka.send('rates.save', request));
   }
 
   @Patch()
   async update(@Body() request: UpdateRateDto): Promise<RateResponseDto> {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.update.rate', request),
-    );
+    return firstValueFrom(this.roomsClientKafka.send('rates.update', request));
   }
 
   @Delete(':id')
   async remove(@Param('id') rateId: string): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.roomsClientKafka.send('rooms.remove.rate', { rateId }),
+      this.roomsClientKafka.send('rates.remove', { rateId }),
     );
   }
 }
