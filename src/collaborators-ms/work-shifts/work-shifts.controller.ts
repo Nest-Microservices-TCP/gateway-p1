@@ -30,30 +30,17 @@ export class WorkShiftsController implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.all.workShifts',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.find.one.workShift',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.save.workShift',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.update.workShift',
-    );
-    this.collaboratorsClientKafka.subscribeToResponseOf(
-      'collaborators.remove.workShift',
-    );
+    this.collaboratorsClientKafka.subscribeToResponseOf('workShifts.find.all');
+    this.collaboratorsClientKafka.subscribeToResponseOf('workShifts.find.one');
+    this.collaboratorsClientKafka.subscribeToResponseOf('workShifts.save');
+    this.collaboratorsClientKafka.subscribeToResponseOf('workShifts.update');
+    this.collaboratorsClientKafka.subscribeToResponseOf('workShifts.remove');
   }
 
   @Get()
   async findAll(): Promise<WorkShiftResponseDto[]> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.find.all.workShifts',
-        {},
-      ),
+      this.collaboratorsClientKafka.send('workShifts.find.all', {}),
     );
   }
 
@@ -62,7 +49,7 @@ export class WorkShiftsController implements OnModuleInit {
     @Param('id') workShiftId: string,
   ): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.find.one.workShift', {
+      this.collaboratorsClientKafka.send('workShifts.find.one', {
         workShiftId,
       }),
     );
@@ -73,10 +60,7 @@ export class WorkShiftsController implements OnModuleInit {
     @Body() request: CreateWorkShiftDto,
   ): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.save.workShift',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('workShifts.save', request),
     );
   }
 
@@ -85,10 +69,7 @@ export class WorkShiftsController implements OnModuleInit {
     @Body() request: UpdateWorkShiftDto,
   ): Promise<WorkShiftResponseDto> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send(
-        'collaborators.update.workShift',
-        request,
-      ),
+      this.collaboratorsClientKafka.send('workShifts.update', request),
     );
   }
 
@@ -97,7 +78,7 @@ export class WorkShiftsController implements OnModuleInit {
     @Param('id') workShiftId: string,
   ): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.collaboratorsClientKafka.send('collaborators.remove.workShift', {
+      this.collaboratorsClientKafka.send('workShifts.remove', {
         workShiftId,
       }),
     );
