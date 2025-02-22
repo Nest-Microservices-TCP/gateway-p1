@@ -30,18 +30,16 @@ export class RentsController {
   ) {}
 
   async onModuleInit() {
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.rents');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.rent');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save.rent');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.update.rent');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.remove.rent');
+    this.roomsClientKafka.subscribeToResponseOf('rents.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('rents.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('rents.save');
+    this.roomsClientKafka.subscribeToResponseOf('rents.update');
+    this.roomsClientKafka.subscribeToResponseOf('rents.remove');
   }
 
   @Get()
   async findAll(): Promise<RentResponseDto[]> {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.all.rents', {}),
-    );
+    return firstValueFrom(this.roomsClientKafka.send('rents.find.all', {}));
   }
 
   @Get('id')
@@ -49,22 +47,18 @@ export class RentsController {
     @Param('id', ParseUUIDPipe) rentId: string,
   ): Promise<RentResponseDto> {
     return firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.one.rent', { rentId }),
+      this.roomsClientKafka.send('rents.find.one', { rentId }),
     );
   }
 
   @Post()
   async save(@Body() request: CreateRentDto) {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.save.rent', request),
-    );
+    return firstValueFrom(this.roomsClientKafka.send('rents.save', request));
   }
 
   @Patch()
   async update(@Body() request: UpdateRentDto): Promise<RentResponseDto> {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.update.room', request),
-    );
+    return firstValueFrom(this.roomsClientKafka.send('rents.update', request));
   }
 
   @Delete(':id')
@@ -72,7 +66,7 @@ export class RentsController {
     @Param('id', ParseUUIDPipe) rentId: string,
   ): Promise<DeleteResultResponse> {
     return firstValueFrom(
-      this.roomsClientKafka.send('rooms.remove.rent', { rentId }),
+      this.roomsClientKafka.send('rents.remove', { rentId }),
     );
   }
 }
