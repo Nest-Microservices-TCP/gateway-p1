@@ -41,10 +41,7 @@ export class PaymentsController implements OnModuleInit {
 
   @Get()
   async findAll() {
-    return this.transactionsClientKafka.send(
-      'transactions.find.all.payments',
-      {},
-    );
+    return this.transactionsClientKafka.send('payments.find.all', {});
   }
 
   @Get(':id')
