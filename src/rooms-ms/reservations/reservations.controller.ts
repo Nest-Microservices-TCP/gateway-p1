@@ -29,17 +29,17 @@ export class ReservationsController {
   ) {}
 
   async onModuleInit() {
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all.reservations');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.one.reservation');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save.reservation');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.update.reservation');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.remove.reservation');
+    this.roomsClientKafka.subscribeToResponseOf('reservations.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('reservations.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('reservations.save');
+    this.roomsClientKafka.subscribeToResponseOf('reservations.update');
+    this.roomsClientKafka.subscribeToResponseOf('reservations.remove');
   }
 
   @Get()
   async findAll(): Promise<ReservationResponseDto[]> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.all.reservations', {}),
+      this.roomsClientKafka.send('reservations.find.all', {}),
     );
   }
 
@@ -48,7 +48,7 @@ export class ReservationsController {
     @Param('id', ParseUUIDPipe) reservationId: string,
   ): Promise<ReservationResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.one.reservation', {
+      this.roomsClientKafka.send('reservations.find.one', {
         reservationId,
       }),
     );
@@ -59,7 +59,7 @@ export class ReservationsController {
     @Body() request: CreateReservationDto,
   ): Promise<ReservationResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.save.reservation', request),
+      this.roomsClientKafka.send('reservations.save', request),
     );
   }
 
@@ -68,7 +68,7 @@ export class ReservationsController {
     @Body() request: UpdateReservationDto,
   ): Promise<ReservationResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.update.reservation', request),
+      this.roomsClientKafka.send('reservations.update', request),
     );
   }
 
@@ -77,7 +77,7 @@ export class ReservationsController {
     @Param('id', ParseUUIDPipe) reservationId: string,
   ): Promise<ReservationResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.remove.reservation', { reservationId }),
+      this.roomsClientKafka.send('reservations.remove', { reservationId }),
     );
   }
 }
