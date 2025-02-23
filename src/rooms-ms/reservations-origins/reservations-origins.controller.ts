@@ -33,26 +33,17 @@ export class ReservationsOriginsController {
   ) {}
 
   async onModuleInit() {
-    this.roomsClientKafka.subscribeToResponseOf(
-      'rooms.find.all.reservationsOrigins',
-    );
-    this.roomsClientKafka.subscribeToResponseOf(
-      'rooms.find.one.reservationOrigin',
-    );
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save.reservationOrigin');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save.reservationOrigin');
-    this.roomsClientKafka.subscribeToResponseOf(
-      'rooms.update.reservationOrigin',
-    );
-    this.roomsClientKafka.subscribeToResponseOf(
-      'rooms.remove.reservationOrigin',
-    );
+    this.roomsClientKafka.subscribeToResponseOf('reservationsOrigins.find.all');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsOrigins.find.one');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsOrigins.save');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsOrigins.update');
+    this.roomsClientKafka.subscribeToResponseOf('reservationsOrigins.remove');
   }
 
   @Get()
   async findAll(): Promise<ReservationOriginResponseDto[]> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.all.reservationsOrigins', {}),
+      this.roomsClientKafka.send('reservationsOrigins.find.all', {}),
     );
   }
 
@@ -61,7 +52,7 @@ export class ReservationsOriginsController {
     @Param('id', ParseUUIDPipe) reservationOriginId: string,
   ): Promise<ReservationOriginResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.one.reservationOrigin', {
+      this.roomsClientKafka.send('reservationsOrigins.find.one', {
         reservationOriginId,
       }),
     );
@@ -72,7 +63,7 @@ export class ReservationsOriginsController {
     @Body() request: CreateReservationOriginDto,
   ): Promise<ReservationOriginResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.save.reservationOrigin', request),
+      this.roomsClientKafka.send('reservationsOrigins.save', request),
     );
   }
 
@@ -81,7 +72,7 @@ export class ReservationsOriginsController {
     @Body() request: UpdateReservationOriginDto,
   ): Promise<ReservationOriginResponseDto> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.update.reservationOrigin', request),
+      this.roomsClientKafka.send('reservationsOrigins.update', request),
     );
   }
 
@@ -90,7 +81,7 @@ export class ReservationsOriginsController {
     @Param('id', ParseUUIDPipe) reservationOriginId: string,
   ): Promise<DeleteResultResponse> {
     return await firstValueFrom(
-      this.roomsClientKafka.send('rooms.remove.reservationOrigin', {
+      this.roomsClientKafka.send('reservationsOrigins.remove', {
         reservationOriginId,
       }),
     );
