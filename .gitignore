@@ -42,6 +42,10 @@ lerna-debug.log*
 .env.production.local
 .env.local
 
+# proto types generated
+src/grpc/**/*.pb.ts
+proto/
+
 # temp directory
 .temp
 .tmp
