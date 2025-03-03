@@ -4,8 +4,14 @@ import * as joi from 'joi';
 interface EnvVars {
   GATEWAY_PORT: number;
 
-  // ROOMS_MICROSERVICE_PORT: number;
-  // ROOMS_MICROSERVICE_HOST: string;
+  ROOMS_MICROSERVICE_HOST: string;
+  ROOMS_MICROSERVICE_PORT: number;
+
+  COLLABORATORS_MICROSERVICE_HOST: string;
+  COLLABORATORS_MICROSERVICE_PORT: number;
+
+  TRANSACTIONS_MICROSERVICE_HOST: string;
+  TRANSACTIONS_MICROSERVICE_PORT: number;
 
   KAFKA_BROKER: string;
 
@@ -23,8 +29,14 @@ const envSchema = joi
   .object({
     GATEWAY_PORT: joi.number().required(),
 
-    // ROOMS_MICROSERVICE_PORT: joi.number().required(),
-    // ROOMS_MICROSERVICE_HOST: joi.string().required(),
+    ROOMS_MICROSERVICE_PORT: joi.number().required(),
+    ROOMS_MICROSERVICE_HOST: joi.string().required(),
+
+    COLLABORATORS_MICROSERVICE_HOST: joi.string().required(),
+    COLLABORATORS_MICROSERVICE_PORT: joi.number().required(),
+
+    TRANSACTIONS_MICROSERVICE_HOST: joi.string().required(),
+    TRANSACTIONS_MICROSERVICE_PORT: joi.number().required(),
 
     KAFKA_BROKER: joi.string().required(),
 
@@ -50,17 +62,23 @@ const envVars: EnvVars = value;
 export const envs = {
   gatewayPort: envVars.GATEWAY_PORT,
 
-  // roomsPort: envVars.ROOMS_MICROSERVICE_PORT,
-  // roomsHost: envVars.ROOMS_MICROSERVICE_HOST,
+  roomsHost: envVars.ROOMS_MICROSERVICE_HOST,
+  roomsPort: envVars.ROOMS_MICROSERVICE_PORT,
 
-  KAFKA_BROKER: envVars.KAFKA_BROKER,
+  collaboratorsHost: envVars.COLLABORATORS_MICROSERVICE_HOST,
+  collaboratorsPort: envVars.COLLABORATORS_MICROSERVICE_PORT,
 
-  ROOMS_KAFKA_CLIENT_ID: envVars.ROOMS_KAFKA_CLIENT_ID,
-  ROOMS_KAFKA_GROUP_ID: envVars.ROOMS_KAFKA_GROUP_ID,
+  transactionsHost: envVars.TRANSACTIONS_MICROSERVICE_HOST,
+  transactionsPort: envVars.TRANSACTIONS_MICROSERVICE_PORT,
 
-  TRANSACTIONS_KAFKA_CLIENT_ID: envVars.TRANSACTIONS_KAFKA_CLIENT_ID,
-  TRANSACTIONS_KAFKA_GROUP_ID: envVars.TRANSACTIONS_KAFKA_GROUP_ID,
+  kafkaBroker: envVars.KAFKA_BROKER,
 
-  COLLABORATORS_KAFKA_CLIENT_ID: envVars.COLLABORATORS_KAFKA_CLIENT_ID,
-  COLLABORATORS_KAFKA_GROUP_ID: envVars.COLLABORATORS_KAFKA_GROUP_ID,
+  roomsKafkaClientId: envVars.ROOMS_KAFKA_CLIENT_ID,
+  roomsKafkaGroupId: envVars.ROOMS_KAFKA_GROUP_ID,
+
+  transactionsKafkaClientId: envVars.TRANSACTIONS_KAFKA_CLIENT_ID,
+  transactionsKafkaGroupId: envVars.TRANSACTIONS_KAFKA_GROUP_ID,
+
+  collaboratorsKafkaClientId: envVars.COLLABORATORS_KAFKA_CLIENT_ID,
+  collaboratorsKafkaGroupId: envVars.COLLABORATORS_KAFKA_GROUP_ID,
 };
