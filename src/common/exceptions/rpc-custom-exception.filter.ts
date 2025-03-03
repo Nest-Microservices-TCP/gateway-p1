@@ -1,5 +1,6 @@
 import {
   ArgumentsHost,
+  Catch,
   ExceptionFilter,
   HttpStatus,
   Logger,
@@ -15,6 +16,7 @@ import { Response } from 'express';
  * Centraliza el manejo de errores en un solo lugar, lo que permite
  * estandarizar cómo se gestionan y se reportan las excepciones al cliente
  */
+@Catch(RpcException)
 export class RpcCustomExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(RpcCustomExceptionFilter.name);
 
@@ -24,9 +26,13 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
 
     this.logger.error(`RpcException: ${exception}`);
 
-    const rpcError = exception?.getError();
+    let rpcError: any = exception?.getError();
 
-    // this.logger.error(`RPC Error: ${rpcError.toString()}`, exception.stack);
+    try {
+      rpcError = exception?.getError?.();
+    } catch (error) {
+      rpcError = 'Error no definido en el servicio gRPC';
+    }
 
     /**
      * Maneja el caso cuando el error viene con mensaje vació
