@@ -11,11 +11,11 @@ import { envs, ROOMS_CLIENT_KAFKA } from 'src/config';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: envs.ROOMS_KAFKA_CLIENT_ID,
-            brokers: [envs.KAFKA_BROKER],
+            clientId: envs.roomsKafkaClientId,
+            brokers: [envs.kafkaBroker],
           },
           consumer: {
-            groupId: envs.ROOMS_KAFKA_GROUP_ID,
+            groupId: envs.roomsKafkaGroupId,
           },
         },
       },
