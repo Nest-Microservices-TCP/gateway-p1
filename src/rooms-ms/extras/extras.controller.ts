@@ -1,8 +1,9 @@
-import { Controller, Inject, UseInterceptors } from '@nestjs/common';
+import { firstValueFrom } from 'rxjs';
+import { Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { ExtrasServiceClient } from 'src/grpc/proto/rooms/extras.pb';
+import { Extra, ExtrasServiceClient } from 'src/grpc/proto/rooms/extras.pb';
 
 import { EXTRAS_GRPC_CLIENT } from 'src/grpc-clients/rooms/extras-grpc.provider';
 
@@ -13,4 +14,13 @@ export class ExtrasController {
     @Inject(EXTRAS_GRPC_CLIENT)
     private readonly extrasGrpcClient: ExtrasServiceClient,
   ) {}
+
+  @Get()
+  async findAll(): Promise<Extra[]> {
+    const { extras } = await firstValueFrom(
+      this.extrasGrpcClient.listExtras({}),
+    );
+
+    return extras;
+  }
 }
