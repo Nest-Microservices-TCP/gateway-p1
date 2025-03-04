@@ -1,5 +1,5 @@
 import { firstValueFrom } from 'rxjs';
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Param, ParseUUIDPipe } from '@nestjs/common';
 
 import {
   Amenity,
@@ -22,5 +22,12 @@ export class AmenitiesController {
     );
 
     return amenities;
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) amenity_id: string,
+  ): Promise<Amenity> {
+    return firstValueFrom(this.amenitiesGrpcClient.getAmenity({ amenity_id }));
   }
 }
