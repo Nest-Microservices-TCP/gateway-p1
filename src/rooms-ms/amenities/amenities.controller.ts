@@ -1,5 +1,14 @@
 import { firstValueFrom } from 'rxjs';
-import { Controller, Get, Inject, Param, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Get,
+  Param,
+  Inject,
+  Controller,
+  ParseUUIDPipe,
+  UseInterceptors,
+} from '@nestjs/common';
+
+import { ErrorInterceptor } from 'src/common/interceptors';
 
 import {
   Amenity,
@@ -9,6 +18,7 @@ import {
 import { AMENITIES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
 @Controller('amenities')
+@UseInterceptors(ErrorInterceptor)
 export class AmenitiesController {
   constructor(
     @Inject(AMENITIES_GRPC_CLIENT)
