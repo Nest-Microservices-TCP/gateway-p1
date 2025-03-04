@@ -1,5 +1,12 @@
 import { firstValueFrom } from 'rxjs';
-import { Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
+import {
+  Get,
+  Param,
+  Inject,
+  Controller,
+  ParseUUIDPipe,
+  UseInterceptors,
+} from '@nestjs/common';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -22,5 +29,10 @@ export class ExtrasController {
     );
 
     return extras;
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) extra_id: string): Promise<Extra> {
+    return firstValueFrom(this.extrasGrpcClient.getExtra({ extra_id }));
   }
 }
