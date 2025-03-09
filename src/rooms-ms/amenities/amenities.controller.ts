@@ -1,4 +1,3 @@
-import { firstValueFrom } from 'rxjs';
 import {
   Get,
   Param,
@@ -7,6 +6,7 @@ import {
   ParseUUIDPipe,
   UseInterceptors,
 } from '@nestjs/common';
+import { firstValueFrom } from 'rxjs';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
@@ -28,7 +28,7 @@ export class AmenitiesController {
   @Get()
   async findAll(): Promise<Amenity[]> {
     const { amenities } = await firstValueFrom(
-      this.amenitiesGrpcClient.listAmenities({}),
+      this.amenitiesGrpcClient.find({}),
     );
 
     return amenities;
@@ -38,6 +38,6 @@ export class AmenitiesController {
   async findOne(
     @Param('id', ParseUUIDPipe) amenity_id: string,
   ): Promise<Amenity> {
-    return firstValueFrom(this.amenitiesGrpcClient.getAmenity({ amenity_id }));
+    return firstValueFrom(this.amenitiesGrpcClient.findOne({ amenity_id }));
   }
 }
