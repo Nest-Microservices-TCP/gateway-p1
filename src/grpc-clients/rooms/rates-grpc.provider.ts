@@ -24,6 +24,11 @@ export const RatesGrpcProvider: Provider = {
         url: `${envs.roomsHost}:${envs.roomsPort}`,
         protoPath: './proto/rooms/rates.proto',
         package: ROOMS_RATES_PACKAGE_NAME,
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
       },
     });
 
