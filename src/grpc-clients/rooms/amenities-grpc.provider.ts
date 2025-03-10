@@ -24,6 +24,11 @@ export const AmenitiesGrpcProvider: Provider = {
         url: `${envs.roomsHost}:${envs.roomsPort}`,
         protoPath: './proto/rooms/amenities.proto',
         package: ROOMS_AMENITIES_PACKAGE_NAME,
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
       },
     });
 
