@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { RoomsKafkaClientModule } from 'src/kafka-clients';
+import { ReservationsOriginsGrpcProvider } from 'src/grpc-clients/rooms';
 
 import { ReservationsOriginsController } from './reservations-origins.controller';
 
 @Module({
-  imports: [RoomsKafkaClientModule],
+  providers: [ReservationsOriginsGrpcProvider],
   controllers: [ReservationsOriginsController],
 })
 export class ReservationsOriginsModule {}
