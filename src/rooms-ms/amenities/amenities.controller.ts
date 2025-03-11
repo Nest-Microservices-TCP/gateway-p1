@@ -7,7 +7,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-
 import { ErrorInterceptor } from 'src/common/interceptors';
 
 import {
