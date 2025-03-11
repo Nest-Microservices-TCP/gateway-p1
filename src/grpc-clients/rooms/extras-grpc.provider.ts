@@ -24,6 +24,11 @@ export const ExtrasGrpcProvider: Provider = {
         url: `${envs.roomsHost}:${envs.roomsPort}`,
         protoPath: './proto/rooms/extras.proto',
         package: ROOMS_EXTRAS_PACKAGE_NAME,
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
       },
     });
 
