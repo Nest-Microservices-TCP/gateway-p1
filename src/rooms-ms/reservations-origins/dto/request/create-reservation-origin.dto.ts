@@ -1,6 +1,9 @@
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { CreateReservationOriginRequest } from 'src/grpc/proto/rooms/reservations_origins.pb';
 
-export class CreateReservationOriginDto {
+export class CreateReservationOriginDto
+  implements CreateReservationOriginRequest
+{
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
@@ -8,6 +11,7 @@ export class CreateReservationOriginDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(255)
   @IsOptional()
   description?: string;
 }
