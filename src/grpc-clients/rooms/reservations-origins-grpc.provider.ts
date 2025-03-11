@@ -25,6 +25,11 @@ export const ReservationsOriginsGrpcProvider: Provider = {
         url: `${envs.roomsHost}:${envs.roomsPort}`,
         protoPath: './proto/rooms/reservations_origins.proto',
         package: ROOMS_RESERVATIONS_ORIGINS_PACKAGE_NAME,
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
       },
     });
 
