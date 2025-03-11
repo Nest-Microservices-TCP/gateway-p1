@@ -24,6 +24,11 @@ export const ReservationsStatesGrpcProvider: Provider = {
         url: `${envs.roomsHost}:${envs.roomsPort}`,
         protoPath: './proto/rooms/reservations_states.proto',
         package: ROOMS_RESERVATIONS_STATES_PACKAGE_NAME,
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
       },
     });
 
