@@ -1,68 +1,23 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Inject,
-  OnModuleInit,
-  Param,
-  Patch,
-  Post,
-  UseInterceptors,
-} from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-
-import { ROOMS_CLIENT_KAFKA } from 'src/config';
+import { Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreateRoomDto, UpdateRoomDto } from './dto/request';
-import { RoomResponseDto } from './dto/response';
+import { ROOMS_GRPC_CLIENT } from 'src/grpc-clients/rooms/rooms-grpc.provider';
+import { Room, RoomsServiceClient } from 'src/grpc/proto/rooms/rooms.pb';
+import { firstValueFrom } from 'rxjs';
 
 @Controller('rooms')
 @UseInterceptors(ErrorInterceptor)
-export class RoomsController implements OnModuleInit {
+export class RoomsController {
   constructor(
-    @Inject(ROOMS_CLIENT_KAFKA)
-    private readonly roomsClientKafka: ClientKafka,
+    @Inject(ROOMS_GRPC_CLIENT)
+    private readonly roomsGrpcClient: RoomsServiceClient,
   ) {}
 
-  onModuleInit() {
-    this.roomsClientKafka.subscribeToResponseOf('rooms.save');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.all');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.find.on');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.update');
-    this.roomsClientKafka.subscribeToResponseOf('rooms.remove');
-  }
-
-  @Post()
-  async save(@Body() request: CreateRoomDto): Promise<RoomResponseDto> {
-    return firstValueFrom(this.roomsClientKafka.send('rooms.save', request));
-  }
-
   @Get()
-  async findAll(): Promise<RoomResponseDto[]> {
-    return firstValueFrom(this.roomsClientKafka.send('rooms.find.all', {}));
-  }
+  async findAll(): Promise<Room[]> {
+    const { rooms } = await firstValueFrom(this.roomsGrpcClient.find({}));
 
-  @Get(':id')
-  async findOne(@Param('id') roomId: string): Promise<RoomResponseDto> {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.find.one', { roomId }),
-    );
-  }
-
-  @Patch()
-  async update(@Body() request: UpdateRoomDto): Promise<RoomResponseDto> {
-    return firstValueFrom(this.roomsClientKafka.send('rooms.update', request));
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') roomId: string): Promise<DeleteResultResponse> {
-    return firstValueFrom(
-      this.roomsClientKafka.send('rooms.remove', { roomId }),
-    );
+    return rooms;
   }
 }
