@@ -13,24 +13,16 @@ interface EnvVars {
   TRANSACTIONS_MICROSERVICE_HOST: string;
   TRANSACTIONS_MICROSERVICE_PORT: number;
 
-  KAFKA_BROKER: string;
-
-  ROOMS_KAFKA_CLIENT_ID: string;
-  ROOMS_KAFKA_GROUP_ID: string;
-
-  TRANSACTIONS_KAFKA_CLIENT_ID: string;
-  TRANSACTIONS_KAFKA_GROUP_ID: string;
-
-  COLLABORATORS_KAFKA_CLIENT_ID: string;
-  COLLABORATORS_KAFKA_GROUP_ID: string;
+  RABBITMQ_HOST: string;
+  RABBITMQ_PORT: number;
 }
 
 const envSchema = joi
   .object({
     GATEWAY_PORT: joi.number().required(),
 
-    ROOMS_MICROSERVICE_PORT: joi.number().required(),
     ROOMS_MICROSERVICE_HOST: joi.string().required(),
+    ROOMS_MICROSERVICE_PORT: joi.number().required(),
 
     COLLABORATORS_MICROSERVICE_HOST: joi.string().required(),
     COLLABORATORS_MICROSERVICE_PORT: joi.number().required(),
@@ -38,16 +30,8 @@ const envSchema = joi
     TRANSACTIONS_MICROSERVICE_HOST: joi.string().required(),
     TRANSACTIONS_MICROSERVICE_PORT: joi.number().required(),
 
-    KAFKA_BROKER: joi.string().required(),
-
-    ROOMS_KAFKA_CLIENT_ID: joi.string().required(),
-    ROOMS_KAFKA_GROUP_ID: joi.string().required(),
-
-    TRANSACTIONS_KAFKA_CLIENT_ID: joi.string().required(),
-    TRANSACTIONS_KAFKA_GROUP_ID: joi.string().required(),
-
-    COLLABORATORS_KAFKA_CLIENT_ID: joi.string().required(),
-    COLLABORATORS_KAFKA_GROUP_ID: joi.string().required(),
+    RABBITMQ_HOST: joi.string().required(),
+    RABBITMQ_PORT: joi.number().required(),
   })
   .unknown(true);
 
@@ -62,23 +46,15 @@ const envVars: EnvVars = value;
 export const envs = {
   gatewayPort: envVars.GATEWAY_PORT,
 
-  roomsHost: envVars.ROOMS_MICROSERVICE_HOST,
-  roomsPort: envVars.ROOMS_MICROSERVICE_PORT,
+  roomsMicroserviceHost: envVars.ROOMS_MICROSERVICE_HOST,
+  roomsMicroservicePort: envVars.ROOMS_MICROSERVICE_PORT,
 
-  collaboratorsHost: envVars.COLLABORATORS_MICROSERVICE_HOST,
-  collaboratorsPort: envVars.COLLABORATORS_MICROSERVICE_PORT,
+  collaboratorsMicroserviceHost: envVars.COLLABORATORS_MICROSERVICE_HOST,
+  collaboratorsMicroservicePort: envVars.COLLABORATORS_MICROSERVICE_PORT,
 
-  transactionsHost: envVars.TRANSACTIONS_MICROSERVICE_HOST,
-  transactionsPort: envVars.TRANSACTIONS_MICROSERVICE_PORT,
+  transactionsMicroserviceHost: envVars.TRANSACTIONS_MICROSERVICE_HOST,
+  transactionsMicroservicePort: envVars.TRANSACTIONS_MICROSERVICE_PORT,
 
-  kafkaBroker: envVars.KAFKA_BROKER,
-
-  roomsKafkaClientId: envVars.ROOMS_KAFKA_CLIENT_ID,
-  roomsKafkaGroupId: envVars.ROOMS_KAFKA_GROUP_ID,
-
-  transactionsKafkaClientId: envVars.TRANSACTIONS_KAFKA_CLIENT_ID,
-  transactionsKafkaGroupId: envVars.TRANSACTIONS_KAFKA_GROUP_ID,
-
-  collaboratorsKafkaClientId: envVars.COLLABORATORS_KAFKA_CLIENT_ID,
-  collaboratorsKafkaGroupId: envVars.COLLABORATORS_KAFKA_GROUP_ID,
+  rabbitMqHost: envVars.RABBITMQ_HOST,
+  rabbitMqPort: envVars.RABBITMQ_PORT,
 };
