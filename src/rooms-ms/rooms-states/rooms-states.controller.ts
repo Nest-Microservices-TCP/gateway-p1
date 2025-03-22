@@ -1,14 +1,20 @@
 import {
+  Get,
   Body,
   Post,
+  Param,
   Inject,
   Controller,
+  ParseUUIDPipe,
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { RoomsStatesServiceClient } from 'src/grpc/proto/rooms/rooms_states.pb';
+import {
+  RoomState,
+  RoomsStatesServiceClient,
+} from 'src/grpc/proto/rooms/rooms_states.pb';
 
 import { ROOMS_STATES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
@@ -25,5 +31,14 @@ export class RoomStatesController {
   @Post()
   async save(@Body() request: CreateRoomStateDto): Promise<void> {
     await firstValueFrom(this.roomsStatesGrpcClient.save(request));
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) room_state_id: string,
+  ): Promise<RoomState> {
+    return firstValueFrom(
+      this.roomsStatesGrpcClient.findOne({ room_state_id }),
+    );
   }
 }
