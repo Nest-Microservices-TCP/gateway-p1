@@ -41,4 +41,13 @@ export class RoomStatesController {
       this.roomsStatesGrpcClient.findOne({ room_state_id }),
     );
   }
+
+  @Get()
+  async find(): Promise<RoomState[]> {
+    const { rooms_states } = await firstValueFrom(
+      this.roomsStatesGrpcClient.find({}),
+    );
+
+    return rooms_states;
+  }
 }
