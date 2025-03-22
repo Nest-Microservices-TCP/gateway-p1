@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { CreateRoomStateRequest } from 'src/grpc/proto/rooms/rooms_states.pb';
 
-export class CreateRoomStateDto {
+export class CreateRoomStateDto implements CreateRoomStateRequest {
   @IsString()
   @IsNotEmpty()
   name: string;
