@@ -1,14 +1,15 @@
 import {
-  MaxLength,
   IsUrl,
   IsString,
-  IsPositive,
-  IsOptional,
   IsNumber,
+  MaxLength,
+  IsOptional,
+  IsPositive,
   IsNotEmpty,
 } from 'class-validator';
+import { CreateCollaboratorRequest } from 'src/grpc/proto/collaborators/collaborators.pb';
 
-export class CreateCollaboratorDto {
+export class CreateCollaboratorDto implements CreateCollaboratorRequest {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
@@ -17,7 +18,7 @@ export class CreateCollaboratorDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  lastName: string;
+  last_name: string;
 
   @IsString()
   @IsOptional()
@@ -41,5 +42,5 @@ export class CreateCollaboratorDto {
   @IsString()
   @IsOptional()
   @IsUrl()
-  profilePhoto?: string;
+  profile_photo?: string;
 }
