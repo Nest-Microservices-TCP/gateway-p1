@@ -5,8 +5,8 @@ import {
   Param,
   Inject,
   Controller,
-  UseInterceptors,
   ParseUUIDPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
@@ -36,5 +36,12 @@ export class AreasController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) area_id: string): Promise<Area> {
     return await firstValueFrom(this.areasGrpcClient.findOne({ area_id }));
+  }
+
+  @Get()
+  async find(): Promise<Area[]> {
+    const { areas } = await firstValueFrom(this.areasGrpcClient.find({}));
+
+    return areas;
   }
 }
