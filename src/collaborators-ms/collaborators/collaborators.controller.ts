@@ -41,4 +41,13 @@ export class CollaboratorsController {
       this.collaboratorsGrpcClient.findOne({ collaborator_id }),
     );
   }
+
+  @Get()
+  async find(): Promise<Collaborator[]> {
+    const { collaborators } = await firstValueFrom(
+      this.collaboratorsGrpcClient.find({}),
+    );
+
+    return collaborators;
+  }
 }
