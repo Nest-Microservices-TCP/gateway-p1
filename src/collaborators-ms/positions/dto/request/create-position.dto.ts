@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { CreatePositionRequest } from 'src/grpc/proto/collaborators/positions.pb';
 
-export class CreatePositionDto {
+export class CreatePositionDto implements CreatePositionRequest {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
