@@ -1,14 +1,20 @@
 import {
-  Body,
+  Get,
   Post,
+  Body,
+  Param,
   Inject,
   Controller,
   UseInterceptors,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { PositionsServiceClient } from 'src/grpc/proto/collaborators/positions.pb';
+import {
+  Position,
+  PositionsServiceClient,
+} from 'src/grpc/proto/collaborators/positions.pb';
 
 import { POSITIONS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
@@ -25,5 +31,14 @@ export class PositionsController {
   @Post()
   async save(@Body() request: CreatePositionDto): Promise<void> {
     firstValueFrom(this.positionsGrpcClient.save(request));
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) position_id: string,
+  ): Promise<Position> {
+    return await firstValueFrom(
+      this.positionsGrpcClient.findOne({ position_id }),
+    );
   }
 }
