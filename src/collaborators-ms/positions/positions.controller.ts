@@ -5,8 +5,8 @@ import {
   Param,
   Inject,
   Controller,
-  UseInterceptors,
   ParseUUIDPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
@@ -40,5 +40,14 @@ export class PositionsController {
     return await firstValueFrom(
       this.positionsGrpcClient.findOne({ position_id }),
     );
+  }
+
+  @Get()
+  async find(): Promise<Position[]> {
+    const { positions } = await firstValueFrom(
+      this.positionsGrpcClient.find({}),
+    );
+
+    return positions;
   }
 }
