@@ -41,4 +41,13 @@ export class WorkShiftsController {
       this.workShiftsGrpcClient.findOne({ work_shift_id }),
     );
   }
+
+  @Get()
+  async find(): Promise<WorkShift[]> {
+    const { work_shifts } = await firstValueFrom(
+      this.workShiftsGrpcClient.find({}),
+    );
+
+    return work_shifts;
+  }
 }
