@@ -1,14 +1,20 @@
 import {
+  Get,
   Post,
   Body,
+  Param,
   Inject,
   Controller,
+  ParseUUIDPipe,
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { WorkShiftsServiceClient } from 'src/grpc/proto/collaborators/work_shifts.pb';
+import {
+  WorkShift,
+  WorkShiftsServiceClient,
+} from 'src/grpc/proto/collaborators/work_shifts.pb';
 
 import { WORK_SHIFTS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
@@ -25,5 +31,14 @@ export class WorkShiftsController {
   @Post()
   async save(@Body() request: CreateWorkShiftDto): Promise<void> {
     await firstValueFrom(this.workShiftsGrpcClient.save(request));
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) work_shift_id: string,
+  ): Promise<WorkShift> {
+    return await firstValueFrom(
+      this.workShiftsGrpcClient.findOne({ work_shift_id }),
+    );
   }
 }
