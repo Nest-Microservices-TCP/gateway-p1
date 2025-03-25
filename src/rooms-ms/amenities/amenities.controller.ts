@@ -1,5 +1,7 @@
 import {
   Get,
+  Post,
+  Body,
   Param,
   Inject,
   Controller,
@@ -16,6 +18,8 @@ import {
 
 import { AMENITIES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
+import { CreateAmenityDto } from './dto/request/create-amenity.dto';
+
 @Controller('amenities')
 @UseInterceptors(ErrorInterceptor)
 export class AmenitiesController {
@@ -23,6 +27,11 @@ export class AmenitiesController {
     @Inject(AMENITIES_GRPC_CLIENT)
     private readonly amenitiesGrpcClient: AmenitiesServiceClient,
   ) {}
+
+  @Post()
+  async save(@Body() request: CreateAmenityDto): Promise<void> {
+    await firstValueFrom(this.amenitiesGrpcClient.save(request));
+  }
 
   @Get()
   async findAll(): Promise<Amenity[]> {
