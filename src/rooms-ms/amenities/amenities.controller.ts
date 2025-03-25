@@ -18,7 +18,7 @@ import {
 
 import { AMENITIES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
-import { CreateAmenityDto } from './dto/request/create-amenity.dto';
+import { CreateAmenityDto } from './dto/request';
 
 @Controller('amenities')
 @UseInterceptors(ErrorInterceptor)
