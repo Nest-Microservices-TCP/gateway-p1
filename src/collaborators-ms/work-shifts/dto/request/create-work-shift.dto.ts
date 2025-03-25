@@ -1,6 +1,7 @@
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { CreateWorkShiftRequest } from 'src/grpc/proto/collaborators/work_shifts.pb';
 
-export class CreateWorkShiftDto {
+export class CreateWorkShiftDto implements CreateWorkShiftRequest {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
@@ -8,13 +9,13 @@ export class CreateWorkShiftDto {
 
   @IsString()
   @IsNotEmpty()
-  checkInTime: Date;
+  check_in_time: string;
 
   @IsString()
   @IsNotEmpty()
-  departureTime: Date;
+  departure_time: string;
 
   @IsBoolean()
   @IsNotEmpty()
-  isShiftOpen: boolean;
+  is_shift_open: boolean;
 }
