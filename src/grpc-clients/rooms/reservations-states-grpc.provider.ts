@@ -21,7 +21,7 @@ export const ReservationsStatesGrpcProvider: Provider = {
     const client: ClientGrpcProxy = ClientProxyFactory.create({
       transport: Transport.GRPC,
       options: {
-        url: `${envs.roomsHost}:${envs.roomsPort}`,
+        url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
         protoPath: './proto/rooms/reservations_states.proto',
         package: ROOMS_RESERVATIONS_STATES_PACKAGE_NAME,
         loader: {
