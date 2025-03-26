@@ -1,29 +1,14 @@
-import {
-  Body,
-  Controller,
-  Inject,
-  Post,
-  UseInterceptors,
-} from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-
-import { ROOMS_CLIENT_KAFKA } from 'src/config';
-
+import { ClientProxy } from '@nestjs/microservices';
+import { Controller, Inject, UseInterceptors } from '@nestjs/common';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { CreateRentDto } from './dto/request';
+import { RENTS_RMQ_CLIENT } from 'src/rmq-clients/rooms/rooms-rmq.provider';
 
 @Controller('rents')
 @UseInterceptors(ErrorInterceptor)
 export class RentsController {
   constructor(
-    @Inject(ROOMS_CLIENT_KAFKA)
-    private readonly roomsClientKafka: ClientKafka,
+    @Inject(RENTS_RMQ_CLIENT)
+    private readonly roomsRmqClient: ClientProxy,
   ) {}
-
-  @Post()
-  async save(@Body() request: CreateRentDto) {
-    firstValueFrom(this.roomsClientKafka.emit('rents.save', request));
-  }
 }
