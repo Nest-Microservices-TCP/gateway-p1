@@ -3,7 +3,7 @@ import { Provider } from '@nestjs/common';
 
 import { envs } from 'src/config';
 
-const RENTS_RMQ_CLIENT = 'RENTS_RMQ_CLIENT';
+export const RENTS_RMQ_CLIENT = 'RENTS_RMQ_CLIENT';
 
 export const RentsRMQProvider: Provider = {
   provide: RENTS_RMQ_CLIENT,
