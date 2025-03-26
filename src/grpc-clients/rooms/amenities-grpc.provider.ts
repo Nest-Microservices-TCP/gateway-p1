@@ -21,7 +21,7 @@ export const AmenitiesGrpcProvider: Provider = {
     const client: ClientGrpcProxy = ClientProxyFactory.create({
       transport: Transport.GRPC,
       options: {
-        url: `${envs.roomsHost}:${envs.roomsPort}`,
+        url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
         protoPath: './proto/rooms/amenities.proto',
         package: ROOMS_AMENITIES_PACKAGE_NAME,
         loader: {
