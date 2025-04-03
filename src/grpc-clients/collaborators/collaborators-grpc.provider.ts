@@ -6,6 +6,7 @@ import {
 import { Provider } from '@nestjs/common';
 
 import { envs } from 'src/config';
+
 import {
   CollaboratorsServiceClient,
   COLLABORATORS_SERVICE_NAME,
@@ -20,7 +21,7 @@ export const CollaboratorsGrpcProvider: Provider = {
     const client: ClientGrpcProxy = ClientProxyFactory.create({
       transport: Transport.GRPC,
       options: {
-        url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
+        url: `${envs.collaboratorsMicroserviceHost}:${envs.collaboratorsMicroservicePort}`,
         protoPath: './proto/collaborators/collaborators.proto',
         package: COLLABORATORS_COLLABORATORS_PACKAGE_NAME,
         loader: {
