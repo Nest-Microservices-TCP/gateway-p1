@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CollaboratorsController } from '../collaborators/collaborators.controller';
+import { PositionsController } from './positions.controller';
 import { PositionsGrpcProvider } from 'src/grpc-clients/collaborators';
 
 @Module({
   providers: [PositionsGrpcProvider],
-  controllers: [CollaboratorsController],
+  controllers: [PositionsController],
 })
 export class PositionsModule {}
