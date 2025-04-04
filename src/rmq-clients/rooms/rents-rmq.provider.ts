@@ -1,5 +1,5 @@
-import { Transport, ClientProxyFactory } from '@nestjs/microservices';
 import { Provider } from '@nestjs/common';
+import { Transport, ClientProxyFactory } from '@nestjs/microservices';
 
 import { envs } from 'src/config';
 
@@ -11,10 +11,12 @@ export const RentsRMQProvider: Provider = {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: [`amqp://${envs.rabbitMqHost}:${envs.rabbitMqPort}`],
-        queue: 'rent-events-queue', // Nombre de la cola
+        urls: [
+          `amqp://${envs.rabbitMqUser}:${envs.rabbitMqPassword}@${envs.rabbitMqHost}:${envs.rabbitMqPort}`,
+        ],
+        queue: envs.rmqRentsQueue, // Nombre de la cola
         queueOptions: {
-          durable: false,
+          durable: true,
         },
       },
     });
