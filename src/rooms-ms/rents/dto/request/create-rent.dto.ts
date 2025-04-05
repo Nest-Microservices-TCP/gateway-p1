@@ -1,16 +1,16 @@
 import {
-  ArrayMinSize,
-  IsArray,
-  IsBoolean,
   IsEnum,
-  IsOptional,
-  IsString,
   IsUUID,
+  IsArray,
+  IsString,
   MaxLength,
+  IsBoolean,
+  IsOptional,
+  ArrayMinSize,
   ValidateNested,
 } from 'class-validator';
-import { AccommodationType, EntryType } from '../../enum';
 import { Type } from 'class-transformer';
+import { AccommodationType, EntryType } from '../../enum';
 import { CreateRentExtraDto } from 'src/rooms-ms/rents-extras/dto/request/create-rent-extra.dto';
 
 export class CreateRentDto {
