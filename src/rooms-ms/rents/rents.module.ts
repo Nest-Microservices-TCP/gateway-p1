@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RentsController } from './rents.controller';
 
-import { RentsRMQProvider } from 'src/rmq-clients/rooms/rooms-rmq.provider';
+import { RentsGrpcProvider } from 'src/grpc-clients/rooms';
 
 @Module({
-  providers: [RentsRMQProvider],
+  providers: [RentsGrpcProvider],
   controllers: [RentsController],
 })
 export class RentsModule {}
