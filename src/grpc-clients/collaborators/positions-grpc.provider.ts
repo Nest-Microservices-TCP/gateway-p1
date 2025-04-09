@@ -11,7 +11,7 @@ import {
   PositionsServiceClient,
   POSITIONS_SERVICE_NAME,
   COLLABORATORS_POSITIONS_PACKAGE_NAME,
-} from 'src/grpc/proto/collaborators/positions.pb';
+} from 'src/grpc/proto-files/collaborators/positions.pb';
 
 export const POSITIONS_GRPC_CLIENT = POSITIONS_SERVICE_NAME;
 

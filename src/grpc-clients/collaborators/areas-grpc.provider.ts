@@ -7,10 +7,10 @@ import { Provider } from '@nestjs/common';
 
 import { envs } from 'src/config';
 import {
-  AREAS_SERVICE_NAME,
   AreasServiceClient,
+  AREAS_SERVICE_NAME,
   COLLABORATORS_AREAS_PACKAGE_NAME,
-} from 'src/grpc/proto/collaborators/areas.pb';
+} from 'src/grpc/proto-files/collaborators/areas.pb';
 
 export const AREAS_GRPC_CLIENT = AREAS_SERVICE_NAME;
 

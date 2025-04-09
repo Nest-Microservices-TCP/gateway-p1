@@ -8,10 +8,10 @@ import {
 import { envs } from 'src/config';
 
 import {
-  RATES_SERVICE_NAME,
   RatesServiceClient,
+  RATES_SERVICE_NAME,
   ROOMS_RATES_PACKAGE_NAME,
-} from 'src/grpc/proto/rooms/rates.pb';
+} from 'src/grpc/proto-files/rooms/rates.pb';
 
 export const RATES_GRPC_CLIENT = RATES_SERVICE_NAME;
 

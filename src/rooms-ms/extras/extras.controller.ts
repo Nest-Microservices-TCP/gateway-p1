@@ -10,7 +10,10 @@ import { firstValueFrom } from 'rxjs';
 
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { Extra, ExtrasServiceClient } from 'src/grpc/proto/rooms/extras.pb';
+import {
+  Extra,
+  ExtrasServiceClient,
+} from 'src/grpc/proto-files/rooms/extras.pb';
 
 import { EXTRAS_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 

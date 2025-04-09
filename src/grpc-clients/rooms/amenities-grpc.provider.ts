@@ -8,10 +8,10 @@ import {
 import { envs } from 'src/config';
 
 import {
-  AMENITIES_SERVICE_NAME,
   AmenitiesServiceClient,
+  AMENITIES_SERVICE_NAME,
   ROOMS_AMENITIES_PACKAGE_NAME,
-} from 'src/grpc/proto/rooms/amenities.pb';
+} from 'src/grpc/proto-files/rooms/amenities.pb';
 
 export const AMENITIES_GRPC_CLIENT = AMENITIES_SERVICE_NAME;
 

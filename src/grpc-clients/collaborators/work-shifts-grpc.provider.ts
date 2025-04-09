@@ -11,7 +11,7 @@ import {
   WorkShiftsServiceClient,
   WORK_SHIFTS_SERVICE_NAME,
   COLLABORATORS_WORK_SHIFTS_PACKAGE_NAME,
-} from 'src/grpc/proto/collaborators/work_shifts.pb';
+} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
 
 export const WORK_SHIFTS_GRPC_CLIENT = WORK_SHIFTS_SERVICE_NAME;
 

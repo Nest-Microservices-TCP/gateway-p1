@@ -11,7 +11,7 @@ import {
   CollaboratorsServiceClient,
   COLLABORATORS_SERVICE_NAME,
   COLLABORATORS_COLLABORATORS_PACKAGE_NAME,
-} from 'src/grpc/proto/collaborators/collaborators.pb';
+} from 'src/grpc/proto-files/collaborators/collaborators.pb';
 
 export const COLLABORATORS_GRPC_CLIENT = COLLABORATORS_SERVICE_NAME;
 

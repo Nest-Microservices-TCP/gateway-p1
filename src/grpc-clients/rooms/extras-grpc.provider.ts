@@ -8,10 +8,10 @@ import {
 import { envs } from 'src/config';
 
 import {
-  EXTRAS_SERVICE_NAME,
   ExtrasServiceClient,
+  EXTRAS_SERVICE_NAME,
   ROOMS_EXTRAS_PACKAGE_NAME,
-} from 'src/grpc/proto/rooms/extras.pb';
+} from 'src/grpc/proto-files/rooms/extras.pb';
 
 export const EXTRAS_GRPC_CLIENT = EXTRAS_SERVICE_NAME;
 

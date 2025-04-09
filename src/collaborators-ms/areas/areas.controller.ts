@@ -14,7 +14,7 @@ import { ErrorInterceptor } from 'src/common/interceptors';
 import {
   Area,
   AreasServiceClient,
-} from 'src/grpc/proto/collaborators/areas.pb';
+} from 'src/grpc/proto-files/collaborators/areas.pb';
 
 import { AREAS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 

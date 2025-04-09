@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { Amenity } from 'src/grpc/proto/rooms/amenities.pb';
+import { Amenity } from 'src/grpc/proto-files/rooms/amenities.pb';
 
 export class AmenityResponseDto implements Amenity {
   @Expose()

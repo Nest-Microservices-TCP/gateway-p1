@@ -14,7 +14,7 @@ import { ErrorInterceptor } from 'src/common/interceptors';
 import {
   RoomState,
   RoomsStatesServiceClient,
-} from 'src/grpc/proto/rooms/rooms_states.pb';
+} from 'src/grpc/proto-files/rooms/rooms_states.pb';
 
 import { ROOMS_STATES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 

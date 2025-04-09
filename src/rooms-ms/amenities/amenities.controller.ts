@@ -14,7 +14,7 @@ import { ErrorInterceptor } from 'src/common/interceptors';
 import {
   Amenity,
   AmenitiesServiceClient,
-} from 'src/grpc/proto/rooms/amenities.pb';
+} from 'src/grpc/proto-files/rooms/amenities.pb';
 
 import { AMENITIES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 

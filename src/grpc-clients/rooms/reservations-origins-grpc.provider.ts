@@ -8,10 +8,10 @@ import { Provider } from '@nestjs/common';
 import { envs } from 'src/config';
 
 import {
-  RESERVATIONS_ORIGINS_SERVICE_NAME,
   ReservationsOriginsServiceClient,
+  RESERVATIONS_ORIGINS_SERVICE_NAME,
   ROOMS_RESERVATIONS_ORIGINS_PACKAGE_NAME,
-} from 'src/grpc/proto/rooms/reservations_origins.pb';
+} from 'src/grpc/proto-files/rooms/reservations_origins.pb';
 
 export const RESERVATIONS_ORIGINS_GRPC_CLIENT =
   RESERVATIONS_ORIGINS_SERVICE_NAME;

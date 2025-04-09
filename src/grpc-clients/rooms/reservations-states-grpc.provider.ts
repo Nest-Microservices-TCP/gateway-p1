@@ -11,7 +11,7 @@ import {
   ReservationsStatesServiceClient,
   RESERVATIONS_STATES_SERVICE_NAME,
   ROOMS_RESERVATIONS_STATES_PACKAGE_NAME,
-} from 'src/grpc/proto/rooms/reservations_states.pb';
+} from 'src/grpc/proto-files/rooms/reservations_states.pb';
 
 export const RESERVATIONS_STATES_GRPC_CLIENT = RESERVATIONS_STATES_SERVICE_NAME;
 
