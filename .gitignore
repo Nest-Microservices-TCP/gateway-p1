@@ -45,6 +45,7 @@ lerna-debug.log*
 # proto types generated
 src/grpc/**/*.pb.ts
 proto/
+proto-files/
 
 # temp directory
 .temp
