@@ -1,14 +1,26 @@
-import { ClientProxy } from '@nestjs/microservices';
-import { Controller, Inject, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Post,
+  Inject,
+  Controller,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { RENTS_RMQ_CLIENT } from 'src/rmq-clients/rooms/rooms-rmq.provider';
+import { CreateRentDto } from './dto/request';
+import { RENTS_GRPC_CLIENT } from 'src/grpc-clients/rooms';
+import { RentsServiceClient } from 'src/grpc/proto-files/rooms/rents.pb';
 
 @Controller('rents')
 @UseInterceptors(ErrorInterceptor)
 export class RentsController {
   constructor(
-    @Inject(RENTS_RMQ_CLIENT)
-    private readonly roomsRmqClient: ClientProxy,
+    @Inject(RENTS_GRPC_CLIENT)
+    private readonly rentsGrpcClient: RentsServiceClient,
   ) {}
+
+  @Post()
+  async save(@Body() request: CreateRentDto): Promise<void> {
+    this.rentsGrpcClient.save(request);
+  }
 }
