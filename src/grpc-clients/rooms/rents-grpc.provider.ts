@@ -22,7 +22,7 @@ export const RentsGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto/rooms/rents.proto',
+        protoPath: './proto-files/rooms/rents.proto',
         package: ROOMS_RENTS_PACKAGE_NAME,
         loader: {
           keepCase: true,
