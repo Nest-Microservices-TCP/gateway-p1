@@ -23,7 +23,7 @@ export const ReservationsOriginsGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto/rooms/reservations_origins.proto',
+        protoPath: './proto-files/rooms/reservations_origins.proto',
         package: ROOMS_RESERVATIONS_ORIGINS_PACKAGE_NAME,
         loader: {
           keepCase: true,
