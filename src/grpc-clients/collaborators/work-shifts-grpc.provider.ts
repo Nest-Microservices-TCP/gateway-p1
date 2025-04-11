@@ -22,7 +22,7 @@ export const WorkShiftsGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto/collaborators/work_shifts.proto',
+        protoPath: './proto-files/collaborators/work_shifts.proto',
         package: COLLABORATORS_WORK_SHIFTS_PACKAGE_NAME,
         loader: {
           keepCase: true,
