@@ -21,7 +21,7 @@ export const AreasGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto/collaborators/areas.proto',
+        protoPath: './proto-files/collaborators/areas.proto',
         package: COLLABORATORS_AREAS_PACKAGE_NAME,
         loader: {
           keepCase: true,
