@@ -22,7 +22,7 @@ export const CollaboratorsGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.collaboratorsMicroserviceHost}:${envs.collaboratorsMicroservicePort}`,
-        protoPath: './proto/collaborators/collaborators.proto',
+        protoPath: './proto-files/collaborators/collaborators.proto',
         package: COLLABORATORS_COLLABORATORS_PACKAGE_NAME,
         loader: {
           keepCase: true,
