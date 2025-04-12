@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { CreateAreaRequest } from 'src/grpc/proto-files/collaborators/areas.pb';
+import { CreateAreaRequest } from 'src/grpc/collaborators/areas.pb';
 
 export class CreateAreaDto implements CreateAreaRequest {
   @IsString()
