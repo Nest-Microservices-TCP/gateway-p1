@@ -14,7 +14,7 @@ import { ErrorInterceptor } from 'src/common/interceptors';
 import {
   Collaborator,
   CollaboratorsServiceClient,
-} from 'src/grpc/proto-files/collaborators/collaborators.pb';
+} from 'src/grpc/collaborators/collaborators.pb';
 
 import { COLLABORATORS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
