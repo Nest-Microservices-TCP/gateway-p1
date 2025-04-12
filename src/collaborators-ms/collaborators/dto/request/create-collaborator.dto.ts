@@ -7,7 +7,7 @@ import {
   IsPositive,
   IsNotEmpty,
 } from 'class-validator';
-import { CreateCollaboratorRequest } from 'src/grpc/proto-files/collaborators/collaborators.pb';
+import { CreateCollaboratorRequest } from 'src/grpc/collaborators/collaborators.pb';
 
 export class CreateCollaboratorDto implements CreateCollaboratorRequest {
   @IsString()
