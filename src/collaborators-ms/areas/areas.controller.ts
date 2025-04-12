@@ -11,10 +11,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import {
-  Area,
-  AreasServiceClient,
-} from 'src/grpc/proto-files/collaborators/areas.pb';
+import { Area, AreasServiceClient } from 'src/grpc/collaborators/areas.pb';
 
 import { AREAS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
