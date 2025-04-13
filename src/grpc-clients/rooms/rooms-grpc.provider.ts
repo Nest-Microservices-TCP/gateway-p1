@@ -5,13 +5,14 @@ import {
 } from '@nestjs/microservices';
 import { Provider } from '@nestjs/common';
 
+import { join } from 'path';
 import { envs } from 'src/config';
 
 import {
   RoomsServiceClient,
   ROOMS_SERVICE_NAME,
   ROOMS_ROOMS_PACKAGE_NAME,
-} from 'src/grpc/proto-files/rooms/rooms.pb';
+} from 'src/grpc/rooms/rooms.pb';
 
 export const ROOMS_GRPC_CLIENT = ROOMS_SERVICE_NAME;
 
@@ -22,9 +23,10 @@ export const RoomsGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto-files/rooms/rooms.proto',
+        protoPath: [join(__dirname, '../../../proto-files/rooms/rooms.proto')],
         package: ROOMS_ROOMS_PACKAGE_NAME,
         loader: {
+          includeDirs: [join(__dirname, '../../../proto-files')],
           keepCase: true,
           enums: String,
           arrays: true,
