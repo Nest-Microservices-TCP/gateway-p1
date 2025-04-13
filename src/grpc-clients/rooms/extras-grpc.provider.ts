@@ -5,13 +5,14 @@ import {
   ClientProxyFactory,
 } from '@nestjs/microservices';
 
+import { join } from 'path';
 import { envs } from 'src/config';
 
 import {
   ExtrasServiceClient,
   EXTRAS_SERVICE_NAME,
   ROOMS_EXTRAS_PACKAGE_NAME,
-} from 'src/grpc/proto-files/rooms/extras.pb';
+} from 'src/grpc/rooms/extras.pb';
 
 export const EXTRAS_GRPC_CLIENT = EXTRAS_SERVICE_NAME;
 
@@ -22,9 +23,10 @@ export const ExtrasGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto-files/rooms/extras.proto',
+        protoPath: [join(__dirname, '../../../proto-files/rooms/extras.proto')],
         package: ROOMS_EXTRAS_PACKAGE_NAME,
         loader: {
+          includeDirs: [join(__dirname, '../../../proto-files')],
           keepCase: true,
           enums: String,
           arrays: true,
