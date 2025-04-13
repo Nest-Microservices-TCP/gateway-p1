@@ -5,13 +5,14 @@ import {
 } from '@nestjs/microservices';
 import { Provider } from '@nestjs/common';
 
+import { join } from 'path';
 import { envs } from 'src/config';
 
 import {
   WorkShiftsServiceClient,
   WORK_SHIFTS_SERVICE_NAME,
   COLLABORATORS_WORK_SHIFTS_PACKAGE_NAME,
-} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+} from 'src/grpc/collaborators/work_shifts.pb';
 
 export const WORK_SHIFTS_GRPC_CLIENT = WORK_SHIFTS_SERVICE_NAME;
 
@@ -22,9 +23,15 @@ export const WorkShiftsGrpcProvider: Provider = {
       transport: Transport.GRPC,
       options: {
         url: `${envs.roomsMicroserviceHost}:${envs.roomsMicroservicePort}`,
-        protoPath: './proto-files/collaborators/work_shifts.proto',
+        protoPath: [
+          join(
+            __dirname,
+            '../../../proto-files/collaborators/work_shifts.proto',
+          ),
+        ],
         package: COLLABORATORS_WORK_SHIFTS_PACKAGE_NAME,
         loader: {
+          includeDirs: [join(__dirname, '../../../proto-files')],
           keepCase: true,
           enums: String,
           arrays: true,
