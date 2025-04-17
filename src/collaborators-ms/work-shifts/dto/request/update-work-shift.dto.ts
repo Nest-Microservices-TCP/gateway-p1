@@ -1,9 +1,9 @@
 import {
-  IsBoolean,
-  IsOptional,
-  IsString,
   IsUUID,
+  IsString,
+  IsBoolean,
   MaxLength,
+  IsOptional,
 } from 'class-validator';
 
 export class UpdateWorkShiftDto {

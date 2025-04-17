@@ -14,7 +14,7 @@ import { ErrorInterceptor } from 'src/common/interceptors';
 import {
   WorkShift,
   WorkShiftsServiceClient,
-} from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+} from 'src/grpc/collaborators/work_shifts.pb';
 
 import { WORK_SHIFTS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 

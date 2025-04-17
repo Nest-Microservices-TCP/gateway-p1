@@ -1,5 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { CreateWorkShiftRequest } from 'src/grpc/proto-files/collaborators/work_shifts.pb';
+import { CreateWorkShiftRequest } from 'src/grpc/collaborators/work_shifts.pb';
 
 export class CreateWorkShiftDto implements CreateWorkShiftRequest {
   @IsString()
