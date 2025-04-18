@@ -6,10 +6,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { ReservationsOriginsServiceClient } from 'src/grpc/proto-files/rooms/reservations_origins.pb';
+import { ReservationsOriginsServiceClient } from 'src/grpc/rooms/reservations_origins.pb';
 
 import { RESERVATIONS_ORIGINS_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
