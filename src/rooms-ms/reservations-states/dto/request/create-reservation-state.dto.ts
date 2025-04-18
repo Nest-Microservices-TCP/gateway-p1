@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
-import { CreateReservationStateRequest } from 'src/grpc/proto-files/rooms/reservations_states.pb';
+import { CreateReservationStateRequest } from 'src/grpc/rooms/reservations_states.pb';
 
 export class CreateReservationStateDto
   implements CreateReservationStateRequest
