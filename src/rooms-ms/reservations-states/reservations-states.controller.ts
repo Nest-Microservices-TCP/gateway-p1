@@ -1,8 +1,8 @@
 import { firstValueFrom } from 'rxjs';
-import { Controller, Inject, Post, UseInterceptors } from '@nestjs/common';
 import { ErrorInterceptor } from 'src/common/interceptors';
+import { Controller, Inject, Post, UseInterceptors } from '@nestjs/common';
 
-import { ReservationsStatesServiceClient } from 'src/grpc/proto-files/rooms/reservations_states.pb';
+import { ReservationsStatesServiceClient } from 'src/grpc/rooms/reservations_states.pb';
 
 import { RESERVATIONS_STATES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
