@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
-import { CreateReservationOriginRequest } from 'src/grpc/proto-files/rooms/reservations_origins.pb';
+import { CreateReservationOriginRequest } from 'src/grpc/rooms/reservations_origins.pb';
 
 export class CreateReservationOriginDto
   implements CreateReservationOriginRequest
