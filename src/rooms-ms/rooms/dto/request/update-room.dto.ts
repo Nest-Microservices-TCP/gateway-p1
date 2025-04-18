@@ -1,8 +1,8 @@
 import {
   IsUUID,
+  IsNumber,
   IsPositive,
   IsOptional,
-  IsNumber,
   IsNotEmpty,
 } from 'class-validator';
 
