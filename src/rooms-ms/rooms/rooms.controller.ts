@@ -1,9 +1,10 @@
 import { firstValueFrom } from 'rxjs';
-import { Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
 import { ErrorInterceptor } from 'src/common/interceptors';
+import { Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
+
+import { Room, RoomsServiceClient } from 'src/grpc/rooms/rooms.pb';
 
 import { ROOMS_GRPC_CLIENT } from 'src/grpc-clients/rooms/rooms-grpc.provider';
-import { Room, RoomsServiceClient } from 'src/grpc/proto-files/rooms/rooms.pb';
 
 @Controller('rooms')
 @UseInterceptors(ErrorInterceptor)
