@@ -2,7 +2,7 @@ import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 import { Get, Inject, Controller, UseInterceptors } from '@nestjs/common';
 
-import { Rate, RatesServiceClient } from 'src/grpc/proto-files/rooms/rates.pb';
+import { Rate, RatesServiceClient } from 'src/grpc/rooms/rates.pb';
 
 import { RATES_GRPC_CLIENT } from 'src/grpc-clients/rooms/rates-grpc.provider';
 

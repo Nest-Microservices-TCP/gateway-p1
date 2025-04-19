@@ -1,6 +1,6 @@
-import { AccommodationType } from 'src/rooms-ms/rents/enum';
-import { BaseResponseDto } from 'src/common/dto/response';
 import { Expose } from 'class-transformer';
+import { BaseResponseDto } from 'src/common/dto/response';
+import { AccommodationType } from 'src/rooms-ms/rents/enum';
 
 export class RateResponseDto extends BaseResponseDto {
   @Expose()

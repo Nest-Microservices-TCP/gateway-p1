@@ -1,4 +1,3 @@
-import { AccommodationType } from 'src/rooms-ms/rents/enum';
 import {
   Min,
   IsEnum,
@@ -8,6 +7,7 @@ import {
   MaxLength,
   IsNotEmpty,
 } from 'class-validator';
+import { AccommodationType } from 'src/rooms-ms/rents/enum';
 
 export class CreateRateDto {
   @IsString({ message: 'The rate name must be a string' })

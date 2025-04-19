@@ -1,4 +1,3 @@
-import { AccommodationType } from 'src/rooms-ms/rents/enum';
 import {
   Min,
   IsUUID,
@@ -10,6 +9,7 @@ import {
   IsOptional,
   IsNotEmpty,
 } from 'class-validator';
+import { AccommodationType } from 'src/rooms-ms/rents/enum';
 
 export class UpdateRateDto {
   @IsUUID()
