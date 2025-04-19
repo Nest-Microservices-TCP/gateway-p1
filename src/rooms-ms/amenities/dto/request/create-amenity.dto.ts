@@ -1,5 +1,5 @@
 import { IsOptional, IsString, MaxLength } from 'class-validator';
-import { CreateAmenityRequest } from 'src/grpc/proto-files/rooms/amenities.pb';
+import { CreateAmenityRequest } from 'src/grpc/rooms/amenities.pb';
 
 export class CreateAmenityDto implements CreateAmenityRequest {
   @IsString()

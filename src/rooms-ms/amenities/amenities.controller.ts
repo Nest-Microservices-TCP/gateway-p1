@@ -11,10 +11,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import {
-  Amenity,
-  AmenitiesServiceClient,
-} from 'src/grpc/proto-files/rooms/amenities.pb';
+import { Amenity, AmenitiesServiceClient } from 'src/grpc/rooms/amenities.pb';
 
 import { AMENITIES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
