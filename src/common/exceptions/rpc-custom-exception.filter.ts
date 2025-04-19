@@ -1,12 +1,12 @@
 import {
-  ArgumentsHost,
   Catch,
-  ExceptionFilter,
-  HttpStatus,
   Logger,
+  HttpStatus,
+  ArgumentsHost,
+  ExceptionFilter,
 } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import { Response } from 'express';
+import { RpcException } from '@nestjs/microservices';
 
 /**
  * El objetivo principal de este filtro es capturar las excepciones que se
