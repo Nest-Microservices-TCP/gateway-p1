@@ -5,11 +5,14 @@ import {
   Controller,
   UseInterceptors,
 } from '@nestjs/common';
+import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { CreateRentDto } from './dto/request';
+import { RentsServiceClient } from 'src/grpc/rooms/rents.pb';
+
 import { RENTS_GRPC_CLIENT } from 'src/grpc-clients/rooms';
-import { RentsServiceClient } from 'src/grpc/proto-files/rooms/rents.pb';
+
+import { CreateRentDto } from './dto/request';
 
 @Controller('rents')
 @UseInterceptors(ErrorInterceptor)
@@ -21,6 +24,6 @@ export class RentsController {
 
   @Post()
   async save(@Body() request: CreateRentDto): Promise<void> {
-    this.rentsGrpcClient.save(request);
+    await firstValueFrom(this.rentsGrpcClient.save(request));
   }
 }

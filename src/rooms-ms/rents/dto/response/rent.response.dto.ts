@@ -1,6 +1,6 @@
-import { AccommodationType, EntryType, RentState } from '../../enum';
-import { BaseResponseDto } from 'src/common/dto/response';
 import { Expose } from 'class-transformer';
+import { BaseResponseDto } from 'src/common/dto/response';
+import { AccommodationType, EntryType, RentState } from '../../enum';
 
 export class RentResponseDto extends BaseResponseDto {
   @Expose()

@@ -1,4 +1,3 @@
-import { AccommodationType, EntryType, RentState } from '../../enum';
 import {
   Min,
   IsUUID,
@@ -11,6 +10,7 @@ import {
   IsOptional,
   IsNotEmpty,
 } from 'class-validator';
+import { AccommodationType, EntryType, RentState } from '../../enum';
 
 export class UpdateRentDto {
   @IsUUID()
