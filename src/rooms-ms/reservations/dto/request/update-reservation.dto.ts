@@ -1,4 +1,3 @@
-import { ReservationOrigin, ReservationState } from '../../enum';
 import {
   Min,
   IsDate,
@@ -8,6 +7,7 @@ import {
   IsPositive,
   IsOptional,
 } from 'class-validator';
+import { ReservationOrigin, ReservationState } from '../../enum';
 
 export class UpdateReservationDto {
   @IsUUID('4')
