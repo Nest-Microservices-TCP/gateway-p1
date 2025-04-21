@@ -18,7 +18,10 @@ import {
 
 import { COLLABORATORS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
-import { CreateCollaboratorDto } from './dto/request';
+import {
+  CreateCollaboratorDto,
+  FindCollaboratorsByIdsDto,
+} from './dto/request';
 
 @Controller('collaborators')
 @UseInterceptors(ErrorInterceptor)
@@ -46,6 +49,17 @@ export class CollaboratorsController {
   async find(): Promise<Collaborator[]> {
     const { collaborators } = await firstValueFrom(
       this.collaboratorsGrpcClient.find({}),
+    );
+
+    return collaborators;
+  }
+
+  @Get('find-by-ids')
+  async findByIds(
+    @Body() request: FindCollaboratorsByIdsDto,
+  ): Promise<Collaborator[]> {
+    const { collaborators } = await firstValueFrom(
+      this.collaboratorsGrpcClient.findByIds(request),
     );
 
     return collaborators;
