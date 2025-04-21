@@ -15,7 +15,7 @@ import { Area, AreasServiceClient } from 'src/grpc/collaborators/areas.pb';
 
 import { AREAS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
-import { CreateAreaDto } from './dto/request';
+import { CreateAreaDto, FindAreasByIdsDto } from './dto/request';
 
 @Controller('areas')
 @UseInterceptors(ErrorInterceptor)
@@ -38,6 +38,15 @@ export class AreasController {
   @Get()
   async find(): Promise<Area[]> {
     const { areas } = await firstValueFrom(this.areasGrpcClient.find({}));
+
+    return areas;
+  }
+
+  @Get('find-by-ids')
+  async findByIds(@Body() request: FindAreasByIdsDto): Promise<Area[]> {
+    const { areas } = await firstValueFrom(
+      this.areasGrpcClient.findByIds(request),
+    );
 
     return areas;
   }
