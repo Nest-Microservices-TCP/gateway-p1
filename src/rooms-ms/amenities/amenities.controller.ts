@@ -15,7 +15,7 @@ import { Amenity, AmenitiesServiceClient } from 'src/grpc/rooms/amenities.pb';
 
 import { AMENITIES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
-import { CreateAmenityDto } from './dto/request';
+import { CreateAmenityDto, FindAmenitiesByIdsDto } from './dto/request';
 
 @Controller('amenities')
 @UseInterceptors(ErrorInterceptor)
@@ -44,5 +44,14 @@ export class AmenitiesController {
     @Param('id', ParseUUIDPipe) amenity_id: string,
   ): Promise<Amenity> {
     return firstValueFrom(this.amenitiesGrpcClient.findOne({ amenity_id }));
+  }
+
+  @Get('find-by-ids')
+  async findByIds(@Body() request: FindAmenitiesByIdsDto): Promise<Amenity[]> {
+    const { amenities } = await firstValueFrom(
+      this.amenitiesGrpcClient.findByIds(request),
+    );
+
+    return amenities;
   }
 }
