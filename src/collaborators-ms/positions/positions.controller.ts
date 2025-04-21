@@ -18,7 +18,7 @@ import {
 
 import { POSITIONS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
-import { CreatePositionDto } from './dto/request';
+import { CreatePositionDto, FindPositionsByIdsDto } from './dto/request';
 
 @Controller('positions')
 @UseInterceptors(ErrorInterceptor)
@@ -46,6 +46,15 @@ export class PositionsController {
   async find(): Promise<Position[]> {
     const { positions } = await firstValueFrom(
       this.positionsGrpcClient.find({}),
+    );
+
+    return positions;
+  }
+
+  @Get('find-by-ids')
+  async findByIds(@Body() request: FindPositionsByIdsDto): Promise<Position[]> {
+    const { positions } = await firstValueFrom(
+      this.positionsGrpcClient.findByIds(request),
     );
 
     return positions;
