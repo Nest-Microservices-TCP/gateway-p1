@@ -18,7 +18,7 @@ import {
 
 import { WORK_SHIFTS_GRPC_CLIENT } from 'src/grpc-clients/collaborators';
 
-import { CreateWorkShiftDto } from './dto/request';
+import { CreateWorkShiftDto, FindWorkShiftsByIdsDto } from './dto/request';
 
 @Controller('work-shifts')
 @UseInterceptors(ErrorInterceptor)
@@ -46,6 +46,17 @@ export class WorkShiftsController {
   async find(): Promise<WorkShift[]> {
     const { work_shifts } = await firstValueFrom(
       this.workShiftsGrpcClient.find({}),
+    );
+
+    return work_shifts;
+  }
+
+  @Get('find-by-ids')
+  async findByIds(
+    @Body() request: FindWorkShiftsByIdsDto,
+  ): Promise<WorkShift[]> {
+    const { work_shifts } = await firstValueFrom(
+      this.workShiftsGrpcClient.findByIds(request),
     );
 
     return work_shifts;
