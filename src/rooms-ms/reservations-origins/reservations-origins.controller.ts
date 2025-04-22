@@ -18,7 +18,10 @@ import {
 
 import { RESERVATIONS_ORIGINS_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
-import { CreateReservationOriginDto } from './dto/request';
+import {
+  CreateReservationOriginDto,
+  FindReservationsOriginsByIdsDto,
+} from './dto/request';
 
 @Controller('reservations-origins')
 @UseInterceptors(ErrorInterceptor)
@@ -49,5 +52,16 @@ export class ReservationsOriginsController {
     return firstValueFrom(
       this.reservationsOriginsGrpcClient.findOne({ reservation_origin_id }),
     );
+  }
+
+  @Get('find-by-ids')
+  async findByIds(
+    @Body() request: FindReservationsOriginsByIdsDto,
+  ): Promise<ReservationOrigin[]> {
+    const { reservations_origins } = await firstValueFrom(
+      this.reservationsOriginsGrpcClient.findByIds(request),
+    );
+
+    return reservations_origins;
   }
 }
