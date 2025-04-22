@@ -1,12 +1,19 @@
+import {
+  Get,
+  Body,
+  Post,
+  Inject,
+  Controller,
+  UseInterceptors,
+} from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
-import { Get, Inject, Controller, UseInterceptors, Body } from '@nestjs/common';
 
 import { Rate, RatesServiceClient } from 'src/grpc/rooms/rates.pb';
 
 import { RATES_GRPC_CLIENT } from 'src/grpc-clients/rooms/rates-grpc.provider';
 
-import { FindRatesByIdsDto } from './dto/request';
+import { CreateRateDto, FindRatesByIdsDto } from './dto/request';
 
 @Controller('rates')
 @UseInterceptors(ErrorInterceptor)
@@ -15,6 +22,11 @@ export class RatesController {
     @Inject(RATES_GRPC_CLIENT)
     private readonly ratesGrpClient: RatesServiceClient,
   ) {}
+
+  @Post()
+  async save(@Body() request: CreateRateDto): Promise<void> {
+    firstValueFrom(this.ratesGrpClient.save(request));
+  }
 
   @Get()
   async findAll(): Promise<Rate[]> {
