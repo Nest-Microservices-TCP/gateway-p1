@@ -2,8 +2,10 @@ import {
   Get,
   Body,
   Post,
+  Param,
   Inject,
   Controller,
+  ParseUUIDPipe,
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
@@ -38,5 +40,14 @@ export class ReservationsOriginsController {
     );
 
     return reservations_origins;
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', ParseUUIDPipe) reservation_origin_id: string,
+  ): Promise<ReservationOrigin> {
+    return firstValueFrom(
+      this.reservationsOriginsGrpcClient.findOne({ reservation_origin_id }),
+    );
   }
 }
