@@ -7,9 +7,9 @@ import {
   MaxLength,
   IsNotEmpty,
 } from 'class-validator';
-import { AccommodationType } from 'src/rooms-ms/rents/enum';
+import { AccommodationType, CreateRateRequest } from 'src/grpc/rooms/rates.pb';
 
-export class CreateRateDto {
+export class CreateRateDto implements CreateRateRequest {
   @IsString({ message: 'The rate name must be a string' })
   @IsNotEmpty({ message: 'The rate name cannot be empty' })
   @MaxLength(255, {
@@ -26,38 +26,38 @@ export class CreateRateDto {
 
   @IsNumber()
   @Min(1, { message: 'The minimum value for accommodation cost is 1 ' })
-  accommodationCost: number;
+  accommodation_cost: number;
 
   @IsNumber()
   @Min(1, { message: 'The minimum value for extra accommodation cost is 1 ' })
-  extraAccommodationCost: number;
+  extra_accommodation_cost: number;
 
   @IsNumber()
   @Min(1, { message: 'The minimum value for overtime cost is 1 ' })
-  overtimeCost: number;
+  overtime_cost: number;
 
   @IsNumber()
   @Min(1, { message: 'The minimum value for extra people cost is 1 ' })
-  extraPeopleCost: number;
+  extra_people_cost: number;
 
   @IsNumber()
-  @Min(1, { message: 'The minimum value for early checkin cost is 1 ' })
-  earlyCheckinCost: number;
+  @Min(1, { message: 'The minimum value for early check_in cost is 1 ' })
+  early_check_in_cost: number;
 
   @IsEnum(AccommodationType)
-  accommodationType: AccommodationType;
+  accommodation_type: AccommodationType;
 
   @IsNotEmpty({ message: 'The rate duration cannot be empty' })
   @Matches(/^([01]\d|2[0-3]):([0-5]\d)?$/, {
-    message: 'The checkin hour must be in the format HH:mm',
+    message: 'The check_in hour must be in the format HH:mm',
   })
-  @IsString({ message: 'The checkin hour must be a string' })
-  checkInHour: string;
+  @IsString({ message: 'The check_in hour must be a string' })
+  check_in_hour: string;
 
   @IsNotEmpty({ message: 'The rate duration cannot be empty' })
   @Matches(/^([01]\d|2[0-3]):([0-5]\d)?$/, {
     message: 'The checkout hour must be in the format HH:mm',
   })
   @IsString({ message: 'The checkout hour must be a string' })
-  checkoutHour: string;
+  checkout_hour: string;
 }
