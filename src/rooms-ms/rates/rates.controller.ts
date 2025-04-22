@@ -2,8 +2,10 @@ import {
   Get,
   Body,
   Post,
+  Param,
   Inject,
   Controller,
+  ParseUUIDPipe,
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
@@ -38,6 +40,11 @@ export class RatesController {
     const { rates } = await firstValueFrom(this.ratesGrpClient.find({}));
 
     return rates;
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) rate_id: string): Promise<Rate> {
+    return firstValueFrom(this.ratesGrpClient.findOne({ rate_id }));
   }
 
   @Get('find-by-ids')
