@@ -1,10 +1,12 @@
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
-import { Get, Inject, Controller, UseInterceptors } from '@nestjs/common';
+import { Get, Inject, Controller, UseInterceptors, Body } from '@nestjs/common';
 
 import { Rate, RatesServiceClient } from 'src/grpc/rooms/rates.pb';
 
 import { RATES_GRPC_CLIENT } from 'src/grpc-clients/rooms/rates-grpc.provider';
+
+import { FindRatesByIdsDto } from './dto/request';
 
 @Controller('rates')
 @UseInterceptors(ErrorInterceptor)
@@ -22,6 +24,15 @@ export class RatesController {
      * el mensaje
      */
     const { rates } = await firstValueFrom(this.ratesGrpClient.find({}));
+
+    return rates;
+  }
+
+  @Get('find-by-ids')
+  async findByIds(@Body() request: FindRatesByIdsDto): Promise<Rate[]> {
+    const { rates } = await firstValueFrom(
+      this.ratesGrpClient.findByIds(request),
+    );
 
     return rates;
   }
