@@ -1,4 +1,5 @@
 import {
+  Get,
   Body,
   Post,
   Inject,
@@ -8,7 +9,10 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ErrorInterceptor } from 'src/common/interceptors';
 
-import { ReservationsOriginsServiceClient } from 'src/grpc/rooms/reservations_origins.pb';
+import {
+  ReservationOrigin,
+  ReservationsOriginsServiceClient,
+} from 'src/grpc/rooms/reservations_origins.pb';
 
 import { RESERVATIONS_ORIGINS_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
@@ -25,5 +29,14 @@ export class ReservationsOriginsController {
   @Post()
   async save(@Body() request: CreateReservationOriginDto): Promise<void> {
     await firstValueFrom(this.reservationsOriginsGrpcClient.save(request));
+  }
+
+  @Get()
+  async findAll(): Promise<ReservationOrigin[]> {
+    const { reservations_origins } = await firstValueFrom(
+      this.reservationsOriginsGrpcClient.find({}),
+    );
+
+    return reservations_origins;
   }
 }
