@@ -1,9 +1,11 @@
 import {
   Get,
   Post,
+  Body,
   Param,
   Inject,
   Controller,
+  ParseUUIDPipe,
   UseInterceptors,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
@@ -16,7 +18,10 @@ import {
 
 import { RESERVATIONS_STATES_GRPC_CLIENT } from 'src/grpc-clients/rooms';
 
-import { CreateReservationStateDto } from './dto/request';
+import {
+  CreateReservationStateDto,
+  FindReservationsStatesByIdsDto,
+} from './dto/request';
 
 @Controller('reservations-states')
 @UseInterceptors(ErrorInterceptor)
@@ -27,23 +32,34 @@ export class ReservationsStatesController {
   ) {}
 
   @Post()
-  async save(request: CreateReservationStateDto): Promise<void> {
+  async save(@Body() request: CreateReservationStateDto): Promise<void> {
     await firstValueFrom(this.reservationsStatesGrpcClient.save(request));
   }
 
   @Get(':id')
   async findOne(
-    @Param('id') reservation_state_id: string,
+    @Param('id', ParseUUIDPipe) reservation_state_id: string,
   ): Promise<ReservationState> {
     return firstValueFrom(
       this.reservationsStatesGrpcClient.findOne({ reservation_state_id }),
     );
   }
 
-  @Get('find-by-ids')
+  @Get()
   async find(): Promise<ReservationState[]> {
     const { reservations_states } = await firstValueFrom(
       this.reservationsStatesGrpcClient.find({}),
+    );
+
+    return reservations_states;
+  }
+
+  @Get('find-by-ids')
+  async findByIds(
+    @Body() request: FindReservationsStatesByIdsDto,
+  ): Promise<ReservationState[]> {
+    const { reservations_states } = await firstValueFrom(
+      this.reservationsStatesGrpcClient.findByIds(request),
     );
 
     return reservations_states;
