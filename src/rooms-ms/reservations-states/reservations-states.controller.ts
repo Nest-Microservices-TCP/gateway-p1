@@ -39,4 +39,13 @@ export class ReservationsStatesController {
       this.reservationsStatesGrpcClient.findOne({ reservation_state_id }),
     );
   }
+
+  @Get('find-by-ids')
+  async find(): Promise<ReservationState[]> {
+    const { reservations_states } = await firstValueFrom(
+      this.reservationsStatesGrpcClient.find({}),
+    );
+
+    return reservations_states;
+  }
 }
