@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { status } from '@grpc/grpc-js';
 import { RpcException } from '@nestjs/microservices';
 import { Catch, Logger, ArgumentsHost, ExceptionFilter } from '@nestjs/common';
+import { CustomException, CustomExceptionDetails } from './interfaces';
 
 @Catch(RpcException)
 export class GrpcExceptionFilter implements ExceptionFilter {
@@ -9,33 +10,27 @@ export class GrpcExceptionFilter implements ExceptionFilter {
 
   catch(exception: RpcException, host: ArgumentsHost) {
     // El contexto debe ser hacia el protocolo en el que se comunica el cliente -> gateway
+    const rpcError = exception.getError();
+
+    let _exception: CustomException<string>;
+    let details: CustomExceptionDetails;
+
+    if (typeof rpcError === 'object') {
+      _exception = rpcError as CustomException<string>;
+      details = JSON.parse(_exception.details);
+    }
+
+    this.logger.error(`RpcException: ${details.details}`);
+
     const context = host.switchToHttp();
     const response: Response = context.getResponse();
 
-    console.log('Se captura en el filtro gRPC');
-
-    const rpcError = exception.getError();
-    let code = status.UNKNOWN;
-    let message = 'Unknown gRPC error';
-
-    try {
-      if (typeof rpcError === 'object') {
-        code = rpcError['code'] ?? status.UNKNOWN;
-        message = rpcError['message'] ?? 'Unknown error message';
-      } else {
-        message = rpcError;
-      }
-    } catch (error) {
-      this.logger.error('Error extracting gRPC exception details', error);
-    }
-
-    this.logger.error(`gRPC Exception caught: ${JSON.stringify(rpcError)}`);
-
-    const httpStatus = this.mapGrpcCodeToHttp(code);
+    const httpStatus = this.mapGrpcCodeToHttp(_exception.code);
 
     return response.status(httpStatus).json({
       status: httpStatus,
-      message,
+      message: details.details,
+      metadata: details.metadata,
       timestamp: new Date().toISOString(),
       path: context.getRequest().url,
     });
