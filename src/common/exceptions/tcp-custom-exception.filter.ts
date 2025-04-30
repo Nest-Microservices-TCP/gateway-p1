@@ -17,8 +17,8 @@ import { RpcException } from '@nestjs/microservices';
  * estandarizar cómo se gestionan y se reportan las excepciones al cliente
  */
 @Catch(RpcException)
-export class RpcCustomExceptionFilter implements ExceptionFilter {
-  private readonly logger = new Logger(RpcCustomExceptionFilter.name);
+export class TcpCustomExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(TcpCustomExceptionFilter.name);
 
   catch(exception: RpcException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
