@@ -1,9 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import {
-  GrpcExceptionFilter,
-  RpcCustomExceptionFilter,
-} from './common/exceptions';
+import { GrpcExceptionFilter } from './common/exceptions';
 
 import { AppModule } from './app.module';
 
@@ -24,10 +21,7 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalFilters(
-    new GrpcExceptionFilter(),
-    new RpcCustomExceptionFilter(),
-  );
+  app.useGlobalFilters(new GrpcExceptionFilter());
 
   await app.listen(envs.gatewayPort);
 
