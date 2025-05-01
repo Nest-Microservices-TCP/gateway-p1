@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { GrpcExceptionFilter } from './common/exceptions';
+import { GrpcExceptionFilter } from './common/exceptions/filters';
 
 import { AppModule } from './app.module';
 

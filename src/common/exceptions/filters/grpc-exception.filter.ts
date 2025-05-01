@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { status } from '@grpc/grpc-js';
 import { RpcException } from '@nestjs/microservices';
 import { Catch, Logger, ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { CustomException, CustomExceptionDetails } from './interfaces';
+import { CustomException, CustomExceptionDetails } from '../interfaces';
 
 @Catch(RpcException)
 export class GrpcExceptionFilter implements ExceptionFilter {
