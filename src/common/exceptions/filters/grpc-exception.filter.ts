@@ -1,8 +1,9 @@
 import { Response } from 'express';
-import { status } from '@grpc/grpc-js';
 import { RpcException } from '@nestjs/microservices';
 import { Catch, Logger, ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { CustomException, CustomExceptionDetails } from '../interfaces';
+import { CustomExceptionDetails } from 'src/grpc/common/common_exceptions.pb';
+import { CustomException } from '../interfaces';
+import { mapGrpcCodeToHttp } from 'src/common/utils';
 
 @Catch(RpcException)
 export class GrpcExceptionFilter implements ExceptionFilter {
@@ -12,51 +13,37 @@ export class GrpcExceptionFilter implements ExceptionFilter {
     // El contexto debe ser hacia el protocolo en el que se comunica el cliente -> gateway
     const rpcError = exception.getError();
 
-    let _exception: CustomException<string>;
+    let customException: CustomException<string>;
+
     let details: CustomExceptionDetails;
+    let grpcCode: number;
+    let className: string;
+    let methodName: string;
 
     if (typeof rpcError === 'object') {
-      _exception = rpcError as CustomException<string>;
-      details = JSON.parse(_exception.details);
+      customException = rpcError as CustomException<string>;
+
+      details = JSON.parse(customException.details);
+      grpcCode = details?.metadata?.grpc_code ?? 2;
+      className = details?.metadata?.class_name ?? 'Unknown service';
+      methodName = details?.metadata?.method_name ?? 'Unknown method';
     }
 
-    this.logger.error(`RpcException: ${details.details}`);
+    this.logger.error(
+      `[${className}.${methodName}] RpcException: ${details.exception_message}`,
+    );
 
     const context = host.switchToHttp();
     const response: Response = context.getResponse();
 
-    const httpStatus = this.mapGrpcCodeToHttp(_exception.code);
+    const httpStatus = mapGrpcCodeToHttp(grpcCode);
 
     return response.status(httpStatus).json({
       status: httpStatus,
-      message: details.details,
-      metadata: details.metadata,
+      message: details?.exception_message,
+      metadata: details?.metadata,
       timestamp: new Date().toISOString(),
       path: context.getRequest().url,
     });
-  }
-
-  private mapGrpcCodeToHttp(code: number): number {
-    switch (code) {
-      case status.INVALID_ARGUMENT:
-        return 400;
-      case status.NOT_FOUND:
-        return 404;
-      case status.ALREADY_EXISTS:
-        return 409;
-      case status.PERMISSION_DENIED:
-      case status.UNAUTHENTICATED:
-        return 403;
-      case status.UNAVAILABLE:
-        return 503;
-      case status.DEADLINE_EXCEEDED:
-        return 504;
-      case status.UNIMPLEMENTED:
-        return 501;
-      case status.FAILED_PRECONDITION:
-        return 412;
-      default:
-        return 500;
-    }
   }
 }
